@@ -12,7 +12,7 @@ namespace BookingSystem.Models
 
         public int? Rate { get; set; }
 
-        [ForeignKey("ApplicationUser")]
+        [ForeignKey("User")]
         public string User_Id { get; set; }
 
         [ForeignKey("Hotel")]
@@ -27,6 +27,5 @@ namespace BookingSystem.Models
 
         public virtual NonHotel? NonHotel { get; set; }
       
-
     }
 }

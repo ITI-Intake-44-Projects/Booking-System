@@ -23,10 +23,14 @@ namespace BookingSystem.Models
         [ForeignKey("Location")]
         public int? LocationId {  get; set; }
 
+        
         public virtual Location? Location { get; set;}
 
         public virtual List<Room>? Rooms { get; set; } = new List<Room>();
 
-        public virtual FeedBack FeedBack { get; set; }
+        public virtual List<FeedBack>?FeedBacks { get; set; } = new List<FeedBack>();
+
+        public virtual List<HotelImages>?HotelImages { get; set; } = new List<HotelImages>();
+
     }
 }

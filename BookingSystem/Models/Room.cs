@@ -25,6 +25,9 @@ namespace BookingSystem.Models
 
         public virtual Hotel? Hotel { get; set; }
 
-        public virtual List<Booking>? Bookings { get; set; } = new List<Booking>(); 
+        public virtual List<Booking>? Bookings { get; set; } = new List<Booking>();
+
+        public virtual List<RoomImages>? RoomImages { get; set; } = new List<RoomImages>();
+
     }
 }

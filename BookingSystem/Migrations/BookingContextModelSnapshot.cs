@@ -62,6 +62,10 @@ namespace BookingSystem.Migrations
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
 
+                    b.Property<byte[]>("Image")
+                        .IsRequired()
+                        .HasColumnType("varbinary(max)");
+
                     b.Property<string>("LastName")
                         .HasColumnType("nvarchar(max)");
 
@@ -198,24 +202,17 @@ namespace BookingSystem.Migrations
                     b.Property<int?>("Rate")
                         .HasColumnType("int");
 
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<string>("User_Id")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("FeedbackId");
 
-                    b.HasIndex("Hotel_Id")
-                        .IsUnique()
-                        .HasFilter("[Hotel_Id] IS NOT NULL");
+                    b.HasIndex("Hotel_Id");
 
-                    b.HasIndex("NonHotel_Id")
-                        .IsUnique()
-                        .HasFilter("[NonHotel_Id] IS NOT NULL");
+                    b.HasIndex("NonHotel_Id");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("User_Id");
 
                     b.ToTable("FeedBacks");
                 });
@@ -254,6 +251,19 @@ namespace BookingSystem.Migrations
                     b.HasIndex("LocationId");
 
                     b.ToTable("Hotels");
+                });
+
+            modelBuilder.Entity("BookingSystem.Models.HotelImages", b =>
+                {
+                    b.Property<int>("HotelId")
+                        .HasColumnType("int");
+
+                    b.Property<byte[]>("Image")
+                        .HasColumnType("varbinary(900)");
+
+                    b.HasKey("HotelId", "Image");
+
+                    b.ToTable("HotelImages");
                 });
 
             modelBuilder.Entity("BookingSystem.Models.Location", b =>
@@ -313,6 +323,19 @@ namespace BookingSystem.Migrations
                     b.ToTable("NonHotels");
                 });
 
+            modelBuilder.Entity("BookingSystem.Models.NonHotelImages", b =>
+                {
+                    b.Property<int>("NonHotelId")
+                        .HasColumnType("int");
+
+                    b.Property<byte[]>("Image")
+                        .HasColumnType("varbinary(900)");
+
+                    b.HasKey("NonHotelId", "Image");
+
+                    b.ToTable("NonHotelImages");
+                });
+
             modelBuilder.Entity("BookingSystem.Models.Payment", b =>
                 {
                     b.Property<int>("PaymentId")
@@ -369,6 +392,19 @@ namespace BookingSystem.Migrations
                     b.HasIndex("HotelId");
 
                     b.ToTable("Rooms");
+                });
+
+            modelBuilder.Entity("BookingSystem.Models.RoomImages", b =>
+                {
+                    b.Property<int>("RoomId")
+                        .HasColumnType("int");
+
+                    b.Property<byte[]>("Image")
+                        .HasColumnType("varbinary(900)");
+
+                    b.HasKey("RoomId", "Image");
+
+                    b.ToTable("RoomImages");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -545,16 +581,18 @@ namespace BookingSystem.Migrations
             modelBuilder.Entity("BookingSystem.Models.FeedBack", b =>
                 {
                     b.HasOne("BookingSystem.Models.Hotel", "Hotel")
-                        .WithOne("FeedBack")
-                        .HasForeignKey("BookingSystem.Models.FeedBack", "Hotel_Id");
+                        .WithMany("FeedBacks")
+                        .HasForeignKey("Hotel_Id");
 
                     b.HasOne("BookingSystem.Models.NonHotel", "NonHotel")
-                        .WithOne("FeedBack")
-                        .HasForeignKey("BookingSystem.Models.FeedBack", "NonHotel_Id");
+                        .WithMany("FeedBacks")
+                        .HasForeignKey("NonHotel_Id");
 
                     b.HasOne("BookingSystem.Models.ApplicationUser", "User")
                         .WithMany("FeedBacks")
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("User_Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Hotel");
 
@@ -572,6 +610,17 @@ namespace BookingSystem.Migrations
                     b.Navigation("Location");
                 });
 
+            modelBuilder.Entity("BookingSystem.Models.HotelImages", b =>
+                {
+                    b.HasOne("BookingSystem.Models.Hotel", "Hotel")
+                        .WithMany("HotelImages")
+                        .HasForeignKey("HotelId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Hotel");
+                });
+
             modelBuilder.Entity("BookingSystem.Models.NonHotel", b =>
                 {
                     b.HasOne("BookingSystem.Models.Location", "Location")
@@ -583,6 +632,17 @@ namespace BookingSystem.Migrations
                     b.Navigation("Location");
                 });
 
+            modelBuilder.Entity("BookingSystem.Models.NonHotelImages", b =>
+                {
+                    b.HasOne("BookingSystem.Models.NonHotel", "NonHotel")
+                        .WithMany("NonHotelImages")
+                        .HasForeignKey("NonHotelId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("NonHotel");
+                });
+
             modelBuilder.Entity("BookingSystem.Models.Room", b =>
                 {
                     b.HasOne("BookingSystem.Models.Hotel", "Hotel")
@@ -590,6 +650,17 @@ namespace BookingSystem.Migrations
                         .HasForeignKey("HotelId");
 
                     b.Navigation("Hotel");
+                });
+
+            modelBuilder.Entity("BookingSystem.Models.RoomImages", b =>
+                {
+                    b.HasOne("BookingSystem.Models.Room", "Room")
+                        .WithMany("RoomImages")
+                        .HasForeignKey("RoomId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Room");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -654,8 +725,9 @@ namespace BookingSystem.Migrations
 
             modelBuilder.Entity("BookingSystem.Models.Hotel", b =>
                 {
-                    b.Navigation("FeedBack")
-                        .IsRequired();
+                    b.Navigation("FeedBacks");
+
+                    b.Navigation("HotelImages");
 
                     b.Navigation("Rooms");
                 });
@@ -671,8 +743,9 @@ namespace BookingSystem.Migrations
                 {
                     b.Navigation("Bookings");
 
-                    b.Navigation("FeedBack")
-                        .IsRequired();
+                    b.Navigation("FeedBacks");
+
+                    b.Navigation("NonHotelImages");
                 });
 
             modelBuilder.Entity("BookingSystem.Models.Payment", b =>
@@ -684,6 +757,8 @@ namespace BookingSystem.Migrations
             modelBuilder.Entity("BookingSystem.Models.Room", b =>
                 {
                     b.Navigation("Bookings");
+
+                    b.Navigation("RoomImages");
                 });
 #pragma warning restore 612, 618
         }

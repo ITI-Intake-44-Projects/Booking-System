@@ -27,7 +27,9 @@ namespace BookingSystem.Models
 
         public virtual List<Booking>? Bookings { get; set; } = new List<Booking>();
 
-        public virtual FeedBack FeedBack { get; set; }
+        public virtual List<FeedBack>? FeedBacks { get; set; } = new List<FeedBack>();
+
+        public virtual List<NonHotelImages>? NonHotelImages { get; set; } = new List<NonHotelImages>();
 
     }
 }

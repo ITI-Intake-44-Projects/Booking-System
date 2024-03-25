@@ -21,6 +21,7 @@ namespace BookingSystem.Models
         [MaxLength(50)]
         public string? Country { get; set; }
 
+        public byte[] Image { get; set; }
 
         public virtual List<Dependant>? Dependants { get; set; } = new List<Dependant>();
 
