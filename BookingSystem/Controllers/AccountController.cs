@@ -66,5 +66,37 @@ namespace BookingSystem.Controllers
         }
 
 
+        [HttpGet]
+        public IActionResult Login()
+        {
+            return View("Login");
+        }
+
+        public async Task<IActionResult> Logout()
+        {
+            await signInManager.SignOutAsync();
+            return RedirectToAction("Login");
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Login(LoginViewModel viewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                 ApplicationUser applicationUser = await userManager.FindByEmailAsync(viewModel.Email);
+                if (applicationUser != null)
+                {
+                    bool userExists = await userManager.CheckPasswordAsync(applicationUser, viewModel.Password);
+                    if (userExists)
+                    {
+                        await signInManager.SignInAsync(applicationUser, viewModel.RememberMe);
+                        return  Content("Logged in successfully :)");
+                    }
+                }
+                ModelState.AddModelError("", "Invalid Account Credientials");
+            }
+            return View("Login" ,viewModel);
+        }
     }
 }
