@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using BookingSystem.Models;
+using BookingSystem.Repository;
 using BookingSystem.ViewModels;
 using Humanizer.Bytes;
 using Microsoft.AspNetCore.Identity;
@@ -13,21 +14,27 @@ namespace BookingSystem.Controllers
         private readonly UserManager<ApplicationUser> userManager;
         private readonly SignInManager<ApplicationUser> signInManager;
         private readonly IMapper Mapper;
+        private readonly ILocationRepository location;
 
-        public AccountController(UserManager<ApplicationUser> UserManager,SignInManager<ApplicationUser> SignInManager,IMapper mapper)
+        public AccountController(UserManager<ApplicationUser> UserManager,SignInManager<ApplicationUser> SignInManager,IMapper mapper,ILocationRepository _Location)
         {
             userManager = UserManager;
             signInManager = SignInManager;
             Mapper = mapper;
+            location = _Location;
         }
         public IActionResult Index()
         {
             return View("Register");
         }
 
+        [HttpGet]
         public IActionResult Register()
         {
-            return View("Register");
+            RegisterUserVM userVm = new RegisterUserVM();
+            userVm.Cities = location.GetCities();
+            userVm.Countires = location.GetDistinctCountries();
+            return View("Register",userVm);
         }
 
         [HttpPost]
@@ -35,30 +42,7 @@ namespace BookingSystem.Controllers
         {
             if(ModelState.IsValid == true)
             {
-                byte[] byteImage = null;
-                if (userVM.Image != null && userVM.Image.Length > 0)
-                {
-                    using (var memoryStream = new MemoryStream())
-                    {
-                        await userVM.Image.CopyToAsync(memoryStream);
-                        byteImage = memoryStream.ToArray();
-                    }
-                }
-                //ApplicationUser user = new ApplicationUser();
-               // CreateMap<RegisterUserVM, ApplicationUser>;
-                ApplicationUser user = Mapper.Map<RegisterUserVM,ApplicationUser>(userVM);
-                //{
-                //    UserName = userVM.UserName,
-                //    Email = userVM.Email,
-                //    PhoneNumber = userVM.PhoneNumber,
-                //    FirstName = userVM.FirstName,
-                //    LastName = userVM.LastName,
-                //    City = userVM.City,
-                //    Country = userVM.Country,
-                //    Image = byteImage,
-                //    PasswordHash = userVM.Password,
-                //    Address = userVM.Address,
-                //};
+                ApplicationUser user = Mapper.Map<RegisterUserVM, ApplicationUser>(userVM);
                 IdentityResult result = await userManager.CreateAsync(user, userVM.Password);
 
                 if (result.Succeeded)
@@ -71,6 +55,8 @@ namespace BookingSystem.Controllers
                     ModelState.AddModelError("", item.Description);
             }
 
+            userVM.Cities = location.GetCities();
+            userVM.Countires = location.GetDistinctCountries();
             return View("Register",userVM);
         }
 
@@ -103,24 +89,7 @@ namespace BookingSystem.Controllers
 
                         return Content("Logged in successfully :)");
 
-                        //string imageBase64 = Convert.ToBase64String(applicationUser.Image);
 
-                        //RegisterUserVM user = new RegisterUserVM()
-                        //{
-                        //    UserName = applicationUser.UserName,
-                        //    Email = applicationUser.Email,
-                        //    PhoneNumber = applicationUser.PhoneNumber,
-                        //    FirstName = applicationUser.FirstName,
-                        //    LastName = applicationUser.LastName,
-                        //    City = applicationUser.City,
-                        //    Country = applicationUser.Country,
-                        //    Password = applicationUser.PasswordHash,
-                        //    Address = applicationUser.Address,
-                        //    Image = imageBase64
-                        //};
-
-                       // return View("Details",user);
-                       //return RedirectToAction("Details");
                     }
                 }
                 ModelState.AddModelError("", "Invalid Account Credientials");
@@ -130,20 +99,10 @@ namespace BookingSystem.Controllers
 
         public IActionResult Details(ApplicationUser Appuser)
         {
-            RegisterUserVM user = new RegisterUserVM()
-            {
-                UserName = Appuser.UserName,
-                Email = Appuser.Email,
-                PhoneNumber = Appuser.PhoneNumber,
-                FirstName = Appuser.FirstName,
-                LastName = Appuser.LastName,
-                City = Appuser.City,
-                Country = Appuser.Country,
-                Password = Appuser.PasswordHash,
-                Address = Appuser.Address,
-            };
 
-            return View("Details",user);
+          
+
+            return View("Details");
         }
     }
 }

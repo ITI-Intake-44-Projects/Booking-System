@@ -5,7 +5,7 @@ namespace BookingSystem.Repository
 {
     public class Repository<T>  : IRepository<T> where T : class
     {
-        BookingContext context;
+        protected BookingContext context;
         public Repository(BookingContext _context)
         {
             context = _context;

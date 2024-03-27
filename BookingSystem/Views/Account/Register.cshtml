@@ -2,6 +2,8 @@
 
 @{
     ViewData["Title"] = "Register";
+    Layout = "_Layout";
+
 }
 
 <h1>Register</h1>
@@ -53,16 +55,30 @@
                 <input asp-for="Address" class="form-control" />
                 <span asp-validation-for="Address" class="text-danger"></span>
             </div>
+      
             <div class="form-group mb-3">
-                <label asp-for="City" class="control-label"></label>
-                <input asp-for="City" class="form-control" />
-                <span asp-validation-for="City" class="text-danger"></span>
+                <label class="mb-2">City</label>
+                <select class="form form-control mb-2" name="City" id="City">
+                    <option value="0">--Select City--</option>
+                    @foreach (var city in Model.Cities)
+                    {
+                        <option value="@city">@city</option>
+                    }
+                </select>
             </div>
+
             <div class="form-group mb-3">
-                <label asp-for="Country" class="control-label"></label>
-                <input asp-for="Country" class="form-control" />
-                <span asp-validation-for="Country" class="text-danger"></span>
+                <label class="mb-2">Country</label>
+                <select class="form form-control mb-2" name="Country" id="Country">
+                    <option value="0">--Select Country--</option>
+                    @foreach (var locItem in Model.Countires)
+                    {
+                        <option value="@locItem">@locItem</option>
+                    }
+                </select>
             </div>
+
+       
 
             <div class="form-group mb-3">
                 <label asp-for="Image" class="control-label"></label>
@@ -81,7 +97,7 @@
             </div>
 
             <div class="form-group mb-3">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Sign In" class="btn btn-primary" />
             </div>
 
            

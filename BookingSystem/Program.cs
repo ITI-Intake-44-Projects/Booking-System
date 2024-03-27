@@ -1,4 +1,5 @@
 using BookingSystem.Models;
+using BookingSystem.Repository;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -21,6 +22,9 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options => {
                     options.Password.RequireNonAlphanumeric = false;
                     options.Password.RequiredLength = 5;
                 }).AddEntityFrameworkStores<BookingContext>();
+
+builder.Services.AddScoped<ILocationRepository, LocationRepository>();
+
 
 var app = builder.Build();
 

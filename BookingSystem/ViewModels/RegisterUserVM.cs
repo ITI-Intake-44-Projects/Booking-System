@@ -1,7 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using BookingSystem.Models;
+using System.ComponentModel.DataAnnotations;
 
 namespace BookingSystem.ViewModels
 {
+    
     public class RegisterUserVM
     {
 
@@ -32,6 +34,12 @@ namespace BookingSystem.ViewModels
 
         [DataType(DataType.Upload)]
         public IFormFile Image { get; set; }
+
+        public List<string>? Countires { get; set; }
+
+        public List<string>? Cities { get; set; }
+
+
 
     }
 }

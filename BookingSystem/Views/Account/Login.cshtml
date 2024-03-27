@@ -2,13 +2,14 @@
 
 @{
     ViewData["Title"] = "Login";
-    Layout = "_Layout";
+    Layout = "_LoggedLayout";
 }
 
 <h1>Login</h1>
 
 <hr />
-<div class="row">
+
+<div class="row mt-5">
     <div class="col-md-4">
         <form asp-action="Login">
             <div asp-validation-summary="All" class="text-danger"></div>
