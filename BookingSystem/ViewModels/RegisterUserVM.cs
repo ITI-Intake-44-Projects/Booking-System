@@ -13,6 +13,7 @@ namespace BookingSystem.ViewModels
 
         public string Email { get; set; }
 
+        public string Gender { get; set; }
 
         [DataType(DataType.Password)]
         public string Password { get; set; }
@@ -29,7 +30,8 @@ namespace BookingSystem.ViewModels
 
         public string Country { get; set; }
 
-        public string Image { get; set; }
+        [DataType(DataType.Upload)]
+        public IFormFile Image { get; set; }
 
     }
 }
