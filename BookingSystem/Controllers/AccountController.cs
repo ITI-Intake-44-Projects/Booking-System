@@ -1,20 +1,65 @@
-﻿using BookingSystem.Models;
+﻿using AutoMapper;
+using BookingSystem.Models;
+using BookingSystem.Repository;
 using BookingSystem.ViewModels;
+using Humanizer.Bytes;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-
+using System;
+using System.IO;
 namespace BookingSystem.Controllers
 {
     public class AccountController : Controller
     {
         private readonly UserManager<ApplicationUser> userManager;
         private readonly SignInManager<ApplicationUser> signInManager;
+        private readonly IMapper Mapper;
+        private readonly ILocationRepository location;
 
-        public AccountController(SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager)
+        public AccountController(UserManager<ApplicationUser> UserManager,SignInManager<ApplicationUser> SignInManager,IMapper mapper,ILocationRepository _Location)
         {
-            this.signInManager = signInManager;
-            this.userManager = userManager;
+            userManager = UserManager;
+            signInManager = SignInManager;
+            Mapper = mapper;
+            location = _Location;
         }
+        public IActionResult Index()
+        {
+            return View("Register");
+        }
+
+        [HttpGet]
+        public IActionResult Register()
+        {
+            RegisterUserVM userVm = new RegisterUserVM();
+            userVm.Cities = location.GetCities();
+            userVm.Countires = location.GetDistinctCountries();
+            return View("Register",userVm);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Register(RegisterUserVM userVM)
+        {
+            if(ModelState.IsValid == true)
+            {
+                ApplicationUser user = Mapper.Map<RegisterUserVM, ApplicationUser>(userVM);
+                IdentityResult result = await userManager.CreateAsync(user, userVM.Password);
+
+                if (result.Succeeded)
+                {
+                    await signInManager.SignInAsync(user, false);
+                    return RedirectToAction("Login");
+                }
+
+                foreach (var item in result.Errors)
+                    ModelState.AddModelError("", item.Description);
+            }
+
+            userVM.Cities = location.GetCities();
+            userVM.Countires = location.GetDistinctCountries();
+            return View("Register",userVM);
+        }
+
 
         [HttpGet]
         public IActionResult Login()
@@ -47,6 +92,14 @@ namespace BookingSystem.Controllers
                 ModelState.AddModelError("", "Invalid Account Credientials");
             }
             return View("Login" ,viewModel);
+        }
+
+        public IActionResult Details(ApplicationUser Appuser)
+        {
+
+          
+
+            return View("Details");
         }
     }
 }
