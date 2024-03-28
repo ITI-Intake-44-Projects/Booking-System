@@ -41,7 +41,7 @@ namespace BookingSystem.Controllers
                     if (userExists)
                     {
                         await signInManager.SignInAsync(applicationUser, viewModel.RememberMe);
-                        return  Content("Logged in successfully :)");
+                        return  Content("Logged in successfully :) ");
                     }
                 }
                 ModelState.AddModelError("", "Invalid Account Credientials");
