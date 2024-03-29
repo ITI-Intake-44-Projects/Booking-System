@@ -1,21 +1,31 @@
 using BookingSystem.Models;
+using BookingSystem.Repository;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 
 namespace BookingSystem.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly BookingContext db;
+        private readonly IBookingRepository bookingRepository;
+        private readonly ILogger<HomeController> logger;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, BookingContext db, IBookingRepository bookingRepository)
         {
-            _logger = logger;
+            this.db = db;
+            this.logger = logger;
+            this.bookingRepository = bookingRepository;
         }
 
-        public IActionResult Index()
+
+        //[Authorize]
+        public ActionResult Index()
         {
-            return View();
+            var mostVisitedPlaces = bookingRepository.GetMostVisitedPlaces();
+            return View("Index", mostVisitedPlaces);
         }
 
         public IActionResult Privacy()

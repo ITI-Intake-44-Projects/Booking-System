@@ -6,5 +6,8 @@ namespace BookingSystem.Repository
     {
         public List<string> GetDistinctCountries();
         public List<string> GetCities();
+
+
+        public byte[] GetCityImage(string cityName);
     }
 }
