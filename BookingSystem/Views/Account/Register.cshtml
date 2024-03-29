@@ -3,6 +3,9 @@
 @{
     ViewData["Title"] = "Register";
     Layout = "";
+    SelectList CitiesList = new SelectList(Model.Cities);
+    SelectList CountriesList = new SelectList(Model.Countires);
+
 }
 
 <!DOCTYPE html>
@@ -145,26 +148,21 @@
                                             <label class="mb-2" asp-for="City">City</label>
                                             <div class="input-group">
                                                 <span class="input-group-text"><i class="bi bi-geo-alt"></i></span>
-                                                <select asp-for="City" class="form-select" id="City">
+                                                <select asp-for="City" class="form-select" id="City" asp-items="CitiesList">
                                                     <option value="">Select City</option>
-                                                    @foreach (var city in Model.Cities)
-                                                    {
-                                                        <option value="@city">@city</option>
-                                                    }
                                                 </select>
+                                                <span asp-validation-for="City" class="text-danger"></span>
+
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <label class="mb-2" asp-for="Country">Country</label>
                                             <div class="input-group">
                                                 <span class="input-group-text"><i class="bi bi-globe"></i></span>
-                                                <select asp-for="Country" class="form-select" id="Country">
+                                                <select asp-for="Country" class="form-select" id="Country" asp-items="CountriesList">
                                                     <option value="">Select Country</option>
-                                                    @foreach (var locItem in Model.Countires)
-                                                    {
-                                                        <option value="@locItem">@locItem</option>
-                                                    }
                                                 </select>
+                                                <span asp-validation-for="Country" class="text-danger"></span>
                                             </div>
                                         </div>
                                     </div>
@@ -172,14 +170,14 @@
                                 <div class="row mb-3">
                                     <div class="col-md-6">
                                         <div class="mb-3 d-flex align-items-center">
-                                            <label class="form-label me-3" for="gender">Gender </label>
+                                            <label asp-for="Gender" class="form-label me-3"></label>
                                             <div class="form-check form-check-inline me-3">
-                                                <input class="form-check-input" type="radio" name="gender" id="male" value="male">
-                                                <label class="form-check-label" for="male">Male</label>
+                                                <input asp-for="Gender" class="form-check-input" id="Male" value="Male" type="radio">
+                                                <label class="form-check-label" for="Male">Male</label>
                                             </div>
                                             <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="radio" name="gender" id="female" value="female">
-                                                <label class="form-check-label" for="female">Female</label>
+                                                <input asp-for="Gender" class="form-check-input" id="Female" value="Female" type="radio">
+                                                <label class="form-check-label " for="Female">Female</label>
                                             </div>
                                             <span asp-validation-for="Gender" class="text-danger"></span>
                                         </div>
@@ -190,6 +188,7 @@
                                         <div class="input-group">
                                             <span class="input-group-text"><i class="bi bi-image"></i></span>
                                             <input asp-for="Image" class="form-control" type="file" />
+                                            <span asp-validation-for="Image" class="text-danger"></span>
                                         </div>
                                     </div>
                                 </div>
