@@ -25,7 +25,8 @@ namespace BookingSystem.Controllers
         }
         public IActionResult Index()
         {
-            return View("Register");
+            //return View("Register");
+            return RedirectToAction("Register");   
         }
 
         [HttpGet]
