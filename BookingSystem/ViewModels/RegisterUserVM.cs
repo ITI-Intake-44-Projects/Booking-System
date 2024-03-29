@@ -12,12 +12,13 @@ namespace BookingSystem.ViewModels
         public string LastName { get; set; }
 
         public string UserName { get; set; }
-
+        [DataType(DataType.EmailAddress)]
         public string Email { get; set; }
 
         public string Gender { get; set; }
 
         [DataType(DataType.Password)]
+        [MinLength(8, ErrorMessage = "Passowrd length should be over 8 characters")]
         public string Password { get; set; }
         [DataType(DataType.Password)]
 
