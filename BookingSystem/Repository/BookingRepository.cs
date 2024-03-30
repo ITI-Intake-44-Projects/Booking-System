@@ -1,5 +1,6 @@
 ﻿using BookingSystem.Models;
 using BookingSystem.ViewModels;
+using Microsoft.EntityFrameworkCore;
 
 namespace BookingSystem.Repository
 {
@@ -12,20 +13,27 @@ namespace BookingSystem.Repository
             this.locationRepository = locationRepository;
         }
 
-        public List<MostVisitedPlacesViewModel> GetMostVisitedPlaces()
+        public List<IGrouping<string?, Booking>> GetMostVisitedPlaces()
         {
-            return context.Bookings
+            //var temp = context.Bookings
+            //        .Where(h => h.RoomId != null && h.Room.Hotel.Location.City != null)
+            //        .GroupBy(o => o.Room.Hotel.Location.City)
+            //        .OrderByDescending(group => group.Count());
+
+
+            //return temp.Select(group => new MostVisitedPlacesViewModel{
+            //            CityName = group.Key,
+            //            Visits = group.Count(),
+            //            CityImage = locationRepository.GetCityImage(group.Key)
+            //        }).Take(5).ToList();
+
+            var ret = context.Bookings
                     .Where(h => h.RoomId != null && h.Room.Hotel.Location.City != null)
                     .GroupBy(o => o.Room.Hotel.Location.City)
+                    .ToList()
                     .OrderByDescending(group => group.Count())
-                    .Select(group => new MostVisitedPlacesViewModel
-                    {
-                        CityName = group.Key,
-                        Visits = group.Count(),
-                        CityImage = locationRepository.GetCityImage(group.Key)
-                    })
-                    .Take(5)
-                    .ToList();
+                    .Take(5).ToList();
+            return ret;
         }
     }
 }

@@ -39,10 +39,7 @@ namespace BookingSystem.Models
 
 
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-           
-        }
+        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder){}
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

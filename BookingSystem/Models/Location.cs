@@ -13,7 +13,7 @@ namespace BookingSystem.Models
         [MaxLength(50)]
         public string? City { get; set; }
 
-        public byte[] ? CityImage { get; set; }
+        public byte[]? CityImage { get; set; }
 
         public virtual List<Hotel>? Hotels { get; set; } = new List<Hotel>();
 

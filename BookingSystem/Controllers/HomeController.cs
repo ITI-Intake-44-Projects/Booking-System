@@ -1,5 +1,6 @@
 using BookingSystem.Models;
 using BookingSystem.Repository;
+using BookingSystem.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -11,20 +12,29 @@ namespace BookingSystem.Controllers
     {
         private readonly BookingContext db;
         private readonly IBookingRepository bookingRepository;
+        private readonly ILocationRepository locationRepository;
         private readonly ILogger<HomeController> logger;
 
-        public HomeController(ILogger<HomeController> logger, BookingContext db, IBookingRepository bookingRepository)
+        public HomeController(ILogger<HomeController> logger, BookingContext db, IBookingRepository bookingRepository, ILocationRepository locationRepository)
         {
             this.db = db;
             this.logger = logger;
             this.bookingRepository = bookingRepository;
+            this.locationRepository = locationRepository;
         }
 
 
         //[Authorize]
-        public ActionResult Index()
+        public IActionResult Index()
         {
-            var mostVisitedPlaces = bookingRepository.GetMostVisitedPlaces();
+            var top5places = bookingRepository.GetMostVisitedPlaces();
+
+            var mostVisitedPlaces = top5places.Select(group => new MostVisitedPlacesViewModel{
+                CityName = group.Key,
+                Visits = group.Count(),
+                CityImage = locationRepository.GetCityImage(group.Key)
+            }).ToList();
+
             return View("Index", mostVisitedPlaces);
         }
 
