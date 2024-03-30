@@ -19,5 +19,11 @@ namespace BookingSystem.Repository
             return context.Locations.Select(l => l.City).ToList();
 
         }
+
+        // return image of a specif city
+        public byte[] GetCityImage(string cityName)
+        {
+            return context.Locations.Where(c => c.City == cityName).Select(c => c.CityImage).FirstOrDefault();
+        }
     }
 }

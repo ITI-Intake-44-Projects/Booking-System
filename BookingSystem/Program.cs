@@ -23,6 +23,7 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options => {
                     options.Password.RequiredLength = 5;
                 }).AddEntityFrameworkStores<BookingContext>();
 
+builder.Services.AddScoped<IBookingRepository, BookingRepository>();
 builder.Services.AddScoped<ILocationRepository, LocationRepository>();
 
 
