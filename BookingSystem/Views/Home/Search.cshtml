@@ -1,0 +1,38 @@
+﻿
+@model List<BookingSystem.ViewModels.SearchPlacesVm>
+
+@* @model  List<SearchPlacesVm> *@
+
+@{
+    ViewData["Title"] = "Search";
+    Layout = "_Layout";
+}
+
+<h1>Search</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+      
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+                @Model[0].Name
+            </td>
+        </tr>
+        <tr>@Model[0].HotelType</tr>
+        <tr>@Model[0].Address</tr>
+        <tr>@Model[0].HotelDescription</tr>
+        <tr>
+            @* <img src="data:image/jpeg;base64,@Convert.ToBase64String(Model[0].HotelImages[0].Image)" /> *@
+            <img src="data:image/png;base64@Model[0].HotelImages[0]" />
+
+        </tr>
+
+
+
+    </tbody>
+</table>
