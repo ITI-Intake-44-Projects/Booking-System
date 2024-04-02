@@ -10,6 +10,9 @@ namespace BookingSystem.Service
         {
             CreateMap<RegisterUserVM, ApplicationUser>()
                 .ForMember(dest => dest.Image, opt => opt.MapFrom(src => ConvertFormFileToByteArray(src.Image)));
+            CreateMap<Hotel, SearchPlacesVm>()
+            .ForMember(dest => dest.HotelImage, opt => opt.MapFrom(src =>
+            src.HotelImages.Select(HotelImages => Convert.ToBase64String(HotelImages.Image)).FirstOrDefault()));
         }
 
         private static byte[] ConvertFormFileToByteArray(IFormFile file)

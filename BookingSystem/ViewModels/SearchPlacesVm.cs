@@ -11,8 +11,9 @@ namespace BookingSystem.ViewModels
 
         public string Address { get; set; }
 
-        public virtual List<string>? HotelImages { get; set; } = new List<string>();
+        public virtual string? HotelImage { get; set; }
 
+        public virtual Location ? Location { get; set; }
 
     }
 }

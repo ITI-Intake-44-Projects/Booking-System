@@ -1,7 +1,6 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model List<SearchPlacesVm>
 @{
+
 }
 
 
@@ -51,8 +50,116 @@
                 </div>
             </div>
             <!-- Dropdown Lists End -->
+        @{
+            int rows = (Model.Count / 3) + 1;
+            int cols = Math.Min(Model.Count ,3);
+            for (int i = 0; i < rows; i++)
+            {
+                <div class="row g-4">
+                    @{
+                        for (int j = 0; j < cols; j++)
+                        {
 
-            <div class="row g-4">
+                            if (j > Model.Count)
+                                break ;
+                            else
+                            {
+                                <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
+                                    <div class="room-item shadow rounded overflow-hidden">
+                                        <div class="position-relative overflow-hidden">
+                                            <img class="img-fluid w-100" style="height:250px;" src="data:image/jpeg;base64,@Model[j].HotelImage" alt="">
+                                        </div>
+                                        <div class="p-4 mt-2">
+                                            <div class="d-flex justify-content-between mb-3">
+                                                <h5 class="mb-0">@Model[j].Name</h5>
+                                                <div class="ps-2">
+                                                    <small class="fa fa-star text-warning"></small>
+                                                    <small class="fa fa-star text-warning"></small>
+                                                    <small class="fa fa-star text-warning"></small>
+                                                    <small class="fa fa-star text-warning"></small>
+                                                    <small class="fa fa-star text-warning"></small>
+                                                </div>
+                                            </div>
+                                            <div class="d-flex mb-3">
+                                                <small class="me-3 mr-2 d-flex">
+                                                    <i class="fas fa-map-marker-alt text-primary mr-1"></i>
+                                                    <p>@Model[j].Location.Country,</p>
+                                                    <p>
+                                                        @Model[j].Location.City
+                                                    </p>
+                                                </small>
+
+                                            </div>
+                                            <p class="text-body mb-3">@Model[j].HotelDescription</p>
+                                            <div class="text-center">
+                                                <a class="btn btn-sm btn-primary rounded py-2 px-4" href="">View Detail</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                            
+                        }
+                    }
+                </div>
+            }
+        }
+
+
+           @*  <div class="row g-4">
+                <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
+                    <div class="room-item shadow rounded overflow-hidden">
+                    <div class="position-relative overflow-hidden ">
+                        <img class="img-fluid w-100 " style="height:250px;" src="data:image/jpeg;base64,@Model[0].HotelImage" alt="">
+                        </div>
+                        <div class="p-4 mt-2">
+                            <div class="d-flex justify-content-between mb-3">
+                                <h5 class="mb-0">Junior Suite</h5>
+                                <div class="ps-2">
+                                    <small class="fa fa-star text-warning"></small>
+                                    <small class="fa fa-star text-warning"></small>
+                                    <small class="fa fa-star text-warning"></small>
+                                    <small class="fa fa-star text-warning"></small>
+                                    <small class="fa fa-star text-warning"></small>
+                                </div>
+                            </div>
+                            <div class="d-flex mb-3">
+                                <small class="me-3 mr-2"><i class="fas fa-map-marker-alt text-primary mr-1"></i>Egypt, Hurgada</small>
+                            </div>
+                            <p class="text-body mb-3">Erat ipsum justo amet duo et elitr dolor, est duo duo eos lorem sed diam stet diam sed stet lorem.</p>
+                            <div class="text-center">
+                                <a class="btn btn-sm btn-primary rounded py-2 px-4" href="">View Detail</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
+                    <div class="room-item shadow rounded overflow-hidden">
+                        <div class="position-relative">
+                        <img class="img-fluid w-100" style="height:250px" src="data:image/jpeg;base64,@Model[1].HotelImage" alt="">
+                        </div>
+                        <div class="p-4 mt-2">
+                            <div class="d-flex justify-content-between mb-3">
+                                <h5 class="mb-0">Junior Suite</h5>
+                                <div class="ps-2">
+                                    <small class="fa fa-star text-warning"></small>
+                                    <small class="fa fa-star text-warning"></small>
+                                    <small class="fa fa-star text-warning"></small>
+                                    <small class="fa fa-star text-warning"></small>
+                                    <small class="fa fa-star text-warning"></small>
+                                </div>
+                            </div>
+                            <div class="d-flex mb-3">
+                                <small class="me-3 mr-2"><i class="fas fa-map-marker-alt text-primary mr-1"></i>Egypt, Hurgada</small>
+                            </div>
+                            <p class="text-body mb-3">Erat ipsum justo amet duo et elitr dolor, est duo duo eos lorem sed diam stet diam sed stet lorem.</p>
+                            <div class="text-center">
+                                <a class="btn btn-sm btn-primary rounded py-2 px-4" href="">View Detail</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
                     <div class="room-item shadow rounded overflow-hidden">
                         <div class="position-relative">
@@ -80,60 +187,9 @@
                     </div>
                 </div>
 
-                <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
-                    <div class="room-item shadow rounded overflow-hidden">
-                        <div class="position-relative">
-                            <img class="img-fluid" src="/img/room.jpg" alt="">
-                        </div>
-                        <div class="p-4 mt-2">
-                            <div class="d-flex justify-content-between mb-3">
-                                <h5 class="mb-0">Junior Suite</h5>
-                                <div class="ps-2">
-                                    <small class="fa fa-star text-warning"></small>
-                                    <small class="fa fa-star text-warning"></small>
-                                    <small class="fa fa-star text-warning"></small>
-                                    <small class="fa fa-star text-warning"></small>
-                                    <small class="fa fa-star text-warning"></small>
-                                </div>
-                            </div>
-                            <div class="d-flex mb-3">
-                                <small class="me-3 mr-2"><i class="fas fa-map-marker-alt text-primary mr-1"></i>Egypt, Hurgada</small>
-                            </div>
-                            <p class="text-body mb-3">Erat ipsum justo amet duo et elitr dolor, est duo duo eos lorem sed diam stet diam sed stet lorem.</p>
-                            <div class="text-center">
-                                <a class="btn btn-sm btn-primary rounded py-2 px-4" href="">View Detail</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
-                    <div class="room-item shadow rounded overflow-hidden">
-                        <div class="position-relative">
-                            <img class="img-fluid" src="/img/room.jpg" alt="">
-                        </div>
-                        <div class="p-4 mt-2">
-                            <div class="d-flex justify-content-between mb-3">
-                                <h5 class="mb-0">Junior Suite</h5>
-                                <div class="ps-2">
-                                    <small class="fa fa-star text-warning"></small>
-                                    <small class="fa fa-star text-warning"></small>
-                                    <small class="fa fa-star text-warning"></small>
-                                    <small class="fa fa-star text-warning"></small>
-                                    <small class="fa fa-star text-warning"></small>
-                                </div>
-                            </div>
-                            <div class="d-flex mb-3">
-                                <small class="me-3 mr-2"><i class="fas fa-map-marker-alt text-primary mr-1"></i>Egypt, Hurgada</small>
-                            </div>
-                            <p class="text-body mb-3">Erat ipsum justo amet duo et elitr dolor, est duo duo eos lorem sed diam stet diam sed stet lorem.</p>
-                            <div class="text-center">
-                                <a class="btn btn-sm btn-primary rounded py-2 px-4" href="">View Detail</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            </div> *@
 
-            </div>
+
             <!-- Pagination -->
             <nav aria-label="Page navigation">
                 <ul class="pagination justify-content-center mt-4">
