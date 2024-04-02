@@ -23,6 +23,8 @@ namespace BookingSystem.Models
         [ForeignKey("Location")]
         public int? LocationId {  get; set; }
 
+        [Range(0,5)]
+        public int? Rate { get; set; }
         
         public virtual Location? Location { get; set;}
 
