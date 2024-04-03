@@ -3,6 +3,7 @@ using BookingSystem.Models;
 using BookingSystem.Repository;
 using BookingSystem.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 
 namespace BookingSystem.Controllers
 {
@@ -10,18 +11,25 @@ namespace BookingSystem.Controllers
     {
         private readonly IHotelRepository hotelRepository;
         private readonly IMapper mapper;
+        private readonly INonHotelRepository nonHotelRepository;
 
-        public SearchController(IHotelRepository hotelRepository,IMapper mapper)
+        public SearchController(IHotelRepository hotelRepository,IMapper mapper ,INonHotelRepository nonHotelRepository)
         {
             this.hotelRepository = hotelRepository;
             this.mapper = mapper;
+            this.nonHotelRepository = nonHotelRepository;
         }
         public IActionResult Index(string city)
         {
-            var list = hotelRepository.GetHotelsByCity(city);
-            var Hotels = mapper.Map<List<Hotel>, List<SearchPlacesVm>>(list);
+            var Hotelslist = hotelRepository.GetHotelsByCity(city);
+            var NonHotelsList = nonHotelRepository.GetNonHotelsByCity(city);
 
-            return View("PlacesAtSearchedCity",Hotels);
+            var hotelsMapped = mapper.Map<List<Hotel>, List<SearchPlacesVm>>(Hotelslist);
+            var nonHotelsMapped = mapper.Map<List<NonHotel>, List<SearchPlacesVm>>(NonHotelsList);
+
+            var places = hotelsMapped.Concat(nonHotelsMapped).ToList();
+
+            return View("PlacesAtSearchedCity",places);
         }
     }
 }
