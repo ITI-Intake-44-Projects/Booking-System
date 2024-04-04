@@ -13,5 +13,6 @@ namespace BookingSystem.Repository
         {
             return context.Hotels.Where(h=>h.Location.City == city).ToList();
         }
+
     }
 }

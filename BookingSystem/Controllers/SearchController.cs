@@ -31,5 +31,24 @@ namespace BookingSystem.Controllers
 
             return View("PlacesAtSearchedCity",places);
         }
+
+        //public IActionResult GetPlace(string city , string type) 
+        //{
+            
+        //    if (type == "Hotel")
+        //    {
+        //        var hotels = hotelRepository.GetHotelsByCity(city);
+        //        var hotelsMapped = mapper.Map<List<Hotel>, List<SearchPlacesVm>>(hotels);
+
+        //        return Json(hotelsMapped);
+        //    }
+        //    else
+        //    {
+        //        var NonHotels = nonHotelRepository.GetNonHotelsByType(type,city);
+        //        var NonHotelsMapped = mapper.Map<List<NonHotel>, List<SearchPlacesVm>>(NonHotels);
+
+        //        return Json(NonHotelsMapped);
+        //    }
+        //}
     }
 }
