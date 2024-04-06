@@ -3,69 +3,77 @@
 
 @{
     ViewData["Title"] = "Room";
-    Layout = "";
+    //Layout = "";
 }
 <head>
-    <meta charset="utf-8">
+   @*  <meta charset="utf-8">
     <title>Hotelier - Hotel HTML Template</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Icon Font Stylesheet -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css">
     <!-- Bootstrap Stylesheet -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"> *@
 
 </head>
 <body>
      
-    <div class="container-xxl bg-white p-0">
+    <div class="container-xxl bg-white py-5" style="margin-top:80px">
         <!-- Room Start -->
         <div class="container-xxl py-5">
             <div class="container">
                 <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
-                    <h1 class="mb-5">Explore Our <span class="text-warning text-uppercase">Rooms</span></h1>
+                    <h1 class="mb-5">Explore Our <span class="text-primary text-uppercase">Rooms</span></h1>
                 </div>
                 <div class="row g-4">
                     @foreach (var room in Model)
                     {
-                        <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
-                            <div class="room-item shadow rounded overflow-hidden">
+                        <div class="col-lg-4 col-md-6 wow fadeInUp  mt-2 mb-2" data-wow-delay="0.1s">
+                            <div class="room-item shadow rounded overflow-hidden h-100">
                                 <div class="position-relative">
                                     <!-- Use a Dynamic image -->
-                                   
-                                    <img class="img-fluid" src="@room.Image" alt="Room Image">
+
+                                    <img class="img-fluid w-100" style="height:250px;" src="data:image/jpeg;base64,@room.Image" alt="Room Image">
 
                                     <!-- Use a static rating -->
-                                    <small class="position-relative start-3 top-200 translate-middle-y bg-warning text-uppercase py-3 px-3 ms-4">$@room.PriceOfNight/Night</small>
+                                    <small class="position-relative start-3 top-200 translate-middle-y bg-primary text-white text-uppercase py-3 px-3 ms-4">$@room.PriceOfNight/Night</small>
 
                                 </div>
-                                <div class="p-4 mt-2">
-                                    <div class="d-flex justify-content-between mb-3">
-                                        <h5 class="mb-0">@room.RoomType</h5>
-                                        <div class="ps-2">
-                                            <!-- Use static star icons -->
-                                            <small class="fa fa-star text-warning"></small>
-                                            <small class="fa fa-star text-warning"></small>
-                                            <small class="fa fa-star text-warning"></small>
-                                            <small class="fa fa-star text-warning"></small>
-                                            <small class="fa fa-star text-warning"></small>
+                                <div class="p-4 mt-2 d-flex flex-column">
+                                    <div class="mb-auto" style="height:150px;">
+                                        <div class="d-flex justify-content-between mb-3">
+                                            <h5 class="mb-0">@room.RoomType</h5>
+                                            <div class="ps-2">
+                                                @{
+                                                    for (int i = 0; i < 5; i++)
+                                                    {
+                                                        if (room.Rate != null && i < room.Rate)
+                                                        {
+                                                            <small class="fa fa-star text-warning"></small>
+                                                        }
+                                                        else
+                                                        {
+                                                            <small class="fa fa-star"></small>
+                                                        }
+                                                    }
+                                                }
+                                            </div>
+                                        </div>
+                                        <div class="d-flex mb-3 align-items-center ">
+                                            <small class="me-3"><i class="fa fa-bed text-warning me-1"></i>3 Bed</small>
+                                            <small class="me-3"><i class="fa fa-bath text-warning me-1 "></i>2 Bath</small>
+                                            <small class="me-3"><i class="fa fa-wifi text-warning me-1 "></i>Wifi</small>
+                                            <small class="me-3"><i class="fa fa-bed text-warning me-1"></i>@room.RoomType</small>
+                                        </div>
+                                        <div class="mb-3 d-flex justify-content-between">
+                                            <p class="text-body mb-3">@room.Description</p>
                                         </div>
                                     </div>
-                                    <div class="d-flex mb-3">
-                                        
-                                        <small class="me-3 mr-2"><i class="fa fa-bed text-warning mr-0"></i>3 Bed</small>
-
-                                        <small class="me-3 mr-2"><i class="fa fa-bath text-warning mr-0"></i>2 Bath</small>
-
-                                        <small class="me-3 mr-2"><i class="fa fa-wifi text-warning mr-0"></i>Wifi</small> <!-- Adjusted margin here -->
-
-                                        <small class="me-3 mr-2"><i class="fa fa-bed text-warning mr-0"></i>@room.RoomType</small>
-                                    </div>
-                                     <p class="text-body mb-3">@room.Description</p> 
-
-                                    <div class="d-flex justify-content-between">
-                                        <a class="btn btn-sm btn-warning rounded py-2 px-4" href="#">View Detail</a>
-                                        <a class="btn btn-sm btn-dark rounded py-2 px-4" href="#">Book Now</a>
-                                    </div>
+                                   
+                                        <div class="d-flex mt-2 align-items-center justify-content-center">
+                                            @* <a class="btn btn-sm btn-warning rounded py-2 px-4" href="#">View Detail</a> *@
+                                            <a class="btn btn-sm btn-primary rounded py-2 px-4" href="#">Book Now</a>
+                                        </div>
+                                    
                                 </div>
                             </div>
                         </div>

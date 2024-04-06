@@ -38,55 +38,62 @@
                     </div>
                     </div>
 
-        <div class="row g-4 mb-2 mt-2 all"  id="all">
+            <div class="row g-4 mb-2 mt-2 all"  id="all">
 
-            @{
+               @{
                 foreach (var place in Model)
                 {
                     <div class="col-lg-4 col-md-6 wow fadeInUp place @place.Type" data-wow-delay="0.1s">
                         <div class="room-item shadow rounded overflow-hidden h-100 ">
                             <div class="position-relative overflow-hidden">
                                 <img class="img-fluid w-100" style="height:250px;" src="data:image/jpeg;base64,@place.Image" alt="">
-                        </div>
+                            </div>
 
-                        <div class="p-4 mt-2">
-                            <div class="d-flex justify-content-between mb-3">
-                                    <h5 class="mb-0">@place.Name</h5>
-                                <div class="ps-2">
-                                        @{
-                                            for (int i = 0; i < 5; i++)
-                                            {
-                                                if (place.Rate != null && i < place.Rate)
+                            <div class="p-4 mt-2">
+                                <div class="mb-3" style="height:180px;">
+                                    <div class="d-flex justify-content-between mb-3">
+                                        <h5 class="mb-0">@place.Name</h5>
+                                        <div class="ps-2">
+                                            @{
+                                                for (int i = 0; i < 5; i++)
                                                 {
-                                    <small class="fa fa-star text-warning"></small>
-                                                }
-                                                else
-                                                {
-                                                    <small class="fa fa-star"></small>
-                                                }
+                                                    if (place.Rate != null && i < place.Rate)
+                                                    {
+                                                        <small class="fa fa-star text-warning"></small>
+                                                    }
+                                                    else
+                                                    {
+                                                        <small class="fa fa-star"></small>
+                                                    }
 
+                                                }
                                             }
-                                        }
-                    </div>
-                </div>
-                                <div class="d-flex mb-3 align-items-center">
-                                    <small class="me-3 mr-2 d-flex align-items-center">
-                                        <i class="fas fa-map-marker-alt text-primary me-2 fs-5"></i>
-                                        <p class="mb-0 fs-6" id="city">@place.Location.Country,@place.Location.City</p>
-                                    </small>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex mb-3 align-items-center">
+                                        <small class="me-3 mr-2 d-flex align-items-center">
+                                            <i class="fas fa-map-marker-alt text-primary me-2 fs-5"></i>
+                                            <p class="mb-0 fs-6" id="city">@place.Location.Country,@place.Location.City</p>
+                                        </small>
 
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <p class="text-body ">@place.Description</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="text-center">
+                                    <a class="btn btn-sm btn-primary rounded py-2 px-4" asp-controller="Room" asp-action="index" asp-route-id="@place.Id" asp-route-type="@place.Type">View Detail</a>
+                                </div>
                             </div>
-                                <p class="text-body mb-3">@place.Description</p>
-                            <div class="text-center">
-                                <a class="btn btn-sm btn-primary rounded py-2 px-4" href="">View Detail</a>
-                            </div>
+
                         </div>
-
                     </div>
-                </div>
 
                 }
-            }
+                }
+            
 
             </div>
 

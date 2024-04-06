@@ -4,37 +4,49 @@ using BookingSystem.Models;
 using BookingSystem.ViewModels;
 
 using System.Collections.Generic;
+using BookingSystem.Repository;
+using AutoMapper;
 
 
 namespace BookingSystem.Controllers
 {
     public class RoomController : Controller
     {
-        private readonly BookingContext _context;
+        private readonly IRoomRepository room;
+        private readonly IMapper mapper;
 
-        public RoomController(BookingContext context)
+        public RoomController(IRoomRepository room ,IMapper mapper)
         {
-            _context = context;
+            this.room = room;
+            this.mapper = mapper;
         }
-        // GET: /Room/Index
-
+        
  
-        [HttpGet]
-        public IActionResult Index()
+        //[HttpGet]
+        public IActionResult Index(int id , string type)
         {
-            List<Room> rooms = _context.Rooms.ToList();
-            List<RoomViewModel> roomViewModels = rooms.Select(r => new RoomViewModel
-            {
-                /////  Add Image here 
-                Description=r.Description,
-                RoomID = r.RoomID,
-                RoomType = r.RoomType,
-                PriceOfNight = r.PriceOfNight.HasValue ? (decimal)r.PriceOfNight.Value : 0m, // Safely handle nullable decimal
-/*                HotelName = r.HotelName,                               */// Assuming Room model has HotelName property
-            }).ToList();
+           if (type == "Hotel")
+           {
+                Rooms(id);
+           }
+           else
+           {
 
-            return View(roomViewModels);
+           }
+
+            return View();
         }
+
+        public IActionResult Rooms(int id) 
+        {
+            var rooms = room.GetRoomsByHotel(id);
+            List<RoomViewModel> roomsVm = mapper.Map<List<Room>,List<RoomViewModel>>(rooms);
+        
+            return View("Index",roomsVm);
+        }
+
+
+
 
 
 
