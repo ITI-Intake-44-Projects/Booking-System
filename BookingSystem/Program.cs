@@ -1,5 +1,6 @@
 using BookingSystem.Models;
 using BookingSystem.Repository;
+using BookingSystem.Service;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -10,6 +11,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddAutoMapper(typeof(Program));
+builder.Services.AddAutoMapper(typeof(MappingProfile));
+
 
 
 builder.Services.AddDbContext<BookingContext>(options => {

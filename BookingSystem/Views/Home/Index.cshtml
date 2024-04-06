@@ -1,8 +1,10 @@
-﻿@model List<MostVisitedPlacesViewModel>
+﻿@using System.Diagnostics
+@model List<MostVisitedPlacesViewModel>
 
 @{
     ViewData["Title"] = "Home Page";
     Layout = "_LoggedLayout";
+    var i = 1;
 }
 
 <!-- Carousel Start -->
@@ -84,6 +86,7 @@
     </div>
 </div>
 <!--search bar end-->
+
 <!-- Destination Start -->
 <div class="container-fluid destination py-5">
     <div class="container py-5">
@@ -93,43 +96,58 @@
         </div>
         <div class="tab-class text-center">
             <ul class="nav nav-pills d-inline-flex justify-content-center mb-5">
-                @foreach (var placeGroup in Model)
-                {
-                    <li class="nav-item">
-                        <a class="d-flex mx-3 py-2 border border-primary bg-light rounded-pill" data-bs-toggle="pill" href="#tab-@placeGroup.CityName">
-                            <span class="text-dark" style="width: 150px;">@placeGroup.CityName</span>
-                        </a>
-                    </li>
-                }
+                <li class="nav-item">
+                    <a class="d-flex mx-3 py-2 border border-primary bg-light rounded-pill nav-link active" 
+                        data-bs-toggle="pill" href="#tab-All" data-country="All">
+                        <span class="text-dark" style="width: 150px;">All</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="d-flex mx-3 py-2 border border-primary bg-light rounded-pill nav-link"
+                       data-bs-toggle="pill" href="#tab-Egypt" data-country="Egypt">
+                        <span class="text-dark" style="width: 150px;">Egypt</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="d-flex mx-3 py-2 border border-primary bg-light rounded-pill nav-link"
+                       data-bs-toggle="pill" href="#tab-Morocco" data-country="Morocco">
+                        <span class="text-dark" style="width: 150px;">Morocco</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="d-flex mx-3 py-2 border border-primary bg-light rounded-pill nav-link"
+                       data-bs-toggle="pill" href="#tab-USA" data-country="USA">
+                        <span class="text-dark" style="width: 150px;">USA</span>
+                    </a>
+                </li>
             </ul>
-
-            <div class="tab-content">
+            <div class="row g-2 tab-content" id="big">
                 @foreach (var place in Model)
                 {
-                    <div id="tab-@place.CityName" class="tab-pane fade show p-0">
-                        <div class="row g-4">
-                            <div class="col-lg-6">
-                                <div class="destination-img">
-                                                                         @*convert byte array to img*@
-                                    <img class="img-fluid rounded w-100" src="data:images/png;base64,@place.CityImage" alt="">
-                                    <div class="destination-overlay p-4">
-                                        <a href="#" class="btn btn-primary text-white rounded-pill border py-2 px-3">20 Photos</a>
-                                        <h4 class="text-white mb-2 mt-3">@place.CityName</h4>
-                                        <a href="#" class="btn-hover text-white">View All Place <i class="fa fa-arrow-right ms-2"></i></a>
-                                    </div>
-                                    @*<div  class="search-icon">
-                                        <a href="@place." data-lightbox="@place.Name"><i class="fa fa-plus-square fa-1x btn btn-light btn-lg-square text-primary"></i></a>
-                                       </div>*@
-                                </div>
+                    <div id="tab-@i" class="cities tab-pane fade show active m-3 col-lg-4">
+                        <div style="height:300px" class="destination-img">
+                            <img style="height:100%;width:100%;object-fit:cover;object-position:center" class="loaded-image img-fluid rounded w-100" src="data:image/jpg;base64,@place.CityImage" alt="@place.CityName">
+                            <div class="destination-overlay p-3">
+                                <h4 class="loaded-image-name text-white mb-2 mt-3">@place.CityName</h4>
+                                <a href="#" class="btn-hover-text-warning text-white">View All Hotels 
+                                    <i class="fa fa-arrow-right ms-2"></i>
+                                </a>
+                            </div>
+                            <div class="search-icon">
+                                <a href="@place." data-lightbox="@place.CityName">
+                                    <i class="fa fa-plus-square fa-1x btn btn-light btn-lg-square text-primary"></i>
+                                </a>
                             </div>
                         </div>
                     </div>
+                    i++;
                 }
             </div>
         </div>
     </div>
 </div>
 <!-- Destination End -->
+
 <!-- cities start -->
 <div class="container-fluid ExploreTour py-5">
     <div class="container py-5">
@@ -195,12 +213,134 @@
     </div>
 </div>
 <!-- cities end -->
-<!--scripts for date picker -->
-<script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
-<script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
-<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
-<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+
 
 <script>
     $('input[name="dates"]').daterangepicker();
 </script>
+
+<script>
+    var big = document.getElementById('big');
+    var cities = document.querySelectorAll('.cities');
+    function loadImages(countryName)
+    {
+        big.innerHTML = "";
+        if (countryName == "All") {
+            big.append(...cities);
+            console.log(cities);
+        } 
+        else 
+        {
+            $.ajax({
+                url: '/Home/RenderImagesUsingAJAX',
+                type: 'GET',
+                data: { countryName: countryName },
+                success: function (data) {
+
+                    for (let idx = 0; idx < data.length; idx++){
+                        var cityElement = cities[idx].cloneNode(true);
+                        big.append(cities[idx]);
+                        cityElement.querySelector(".loaded-image").src = 'data:image/jpg;base64,' + data[idx]._image;
+                        cityElement.querySelector(".loaded-image-name").innerHTML = data[idx]._name;
+                        console.log("name " + data[idx]._name);
+                        console.log(cities);
+                    }
+                }, 
+                error: function (xhr, status, error) {
+                    console.error('Error:', error);
+                    $('#tab-' + countryName + ' .tab-pane').html('<p>Error loading images. Please try again later.</p>');
+                }
+            });
+            console.log("test");
+        }
+    }
+    $('.nav-link').click(function () {
+        var countryName = $(this).data('country');
+        loadImages(countryName);
+    });
+</script>
+
+<!--ajax start-->
+@* <script>
+    $(document).ready(function () {
+        function loadImagesForCountry(CountryName) {
+            $.ajax({
+                url: '/Home/RenderImagesUsingAJAX',
+                type: 'GET',
+                data: { CountryName: CountryName },
+                success: function (data) {
+                    $('.destination-img').empty();
+                    var tabContent = $('#tab-' + CountryName + ' .tab-pane');
+                    tabContent.empty();
+                    if (!data || data.length === 0) {
+                        tabContent.html('<p>No images found for this country.</p>');
+                    } else {
+                        data.forEach(function (img) {
+                            var destinationImgDiv = $('<div>', {
+                                'class': 'tab-pane fade show m-3 col-lg-4'
+                            });
+
+                            var destinationImgContainer = $('<div>', {
+                                'class': 'destination-img'
+                            });
+
+                            var imageElement = $('<img>', {
+                                'src': 'data:image/jpg;base64,' + img,
+                                'class': 'img-fluid rounded w-100',
+                                'alt': 'City Image'
+                            });
+
+                            var overlayElement = $('<div>', {
+                                'class': 'destination-overlay p-3'
+                            }).append(
+                                $('<h4>', {
+                                    'class': 'text-white mb-2 mt-3',
+                                    'text': 'City Name'
+                                }),
+                                $('<a>', {
+                                    'href': '#',
+                                    'class': 'btn-hover-text-warning text-white',
+                                    'text': 'View All Hotels'
+                                }).append($('<i>', {
+                                    'class': 'fa fa-arrow-right ms-2'
+                                }))
+                            );
+
+                            var searchIconElement = $('<div>', {
+                                'class': 'search-icon'
+                            }).append(
+                                $('<a>', {
+                                    'href': '#',
+                                    'data-lightbox': 'City Name'
+                                }).append($('<i>', {
+                                    'class': 'fa fa-plus-square fa-1x btn btn-light btn-lg-square text-primary'
+                                }))
+                            );
+
+                            destinationImgContainer.append(imageElement, overlayElement, searchIconElement);
+                            destinationImgDiv.append(destinationImgContainer);
+                            tabContent.append(destinationImgDiv);
+                        });
+                    }
+                    console.log("Images loaded for " + CountryName + "!");
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error:', error);
+                    $('#tab-' + CountryName + ' .tab-pane').html('<p>Error loading images. Please try again later.</p>');
+                }
+            });
+        }
+
+        $('.nav-link').click(function () {
+            var countryName = $(this).data('country');
+            loadImagesForCountry(countryName);
+        });
+    });
+</script> *@
+<!-- ajax end-->

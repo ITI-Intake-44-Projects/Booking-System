@@ -1,4 +1,5 @@
 ﻿using BookingSystem.Models;
+using BookingSystem.ViewModels;
 
 namespace BookingSystem.Repository
 {
@@ -8,6 +9,9 @@ namespace BookingSystem.Repository
         public List<string> GetCities();
 
 
-        public byte[] GetCityImage(string cityName);
+        public string GetCityImage(string cityName);
+        public string GetCountryByCityName(string cityName);
+        public List<string> GetCitiesByCountryName(string country);
+        public List<json_image_data> GetImagesByCountryName(string country);
     }
 }
