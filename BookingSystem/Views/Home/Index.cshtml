@@ -110,8 +110,8 @@
                 </li>
                 <li class="nav-item">
                     <a class="d-flex mx-3 py-2 border border-primary bg-light rounded-pill nav-link"
-                       data-bs-toggle="pill" href="#tab-Morocco" data-country="Morocco">
-                        <span class="text-dark" style="width: 150px;">Morocco</span>
+                       data-bs-toggle="pill" href="#tab-Morocco" data-country="Indonesia">
+                        <span class="text-dark" style="width: 150px;">Indonesia</span>
                     </a>
                 </li>
                 <li class="nav-item">
@@ -124,20 +124,22 @@
             <div class="row g-2 tab-content" id="big">
                 @foreach (var place in Model)
                 {
-                    <div id="tab-@i" class="cities tab-pane fade show active m-3 col-lg-4">
-                        <div style="height:300px" class="destination-img">
-                            <img style="height:100%;width:100%;object-fit:cover;object-position:center" class="loaded-image img-fluid rounded w-100" src="data:image/jpg;base64,@place.CityImage" alt="@place.CityName">
+                    <div id="tab-@i" class="col-lg-4 col-md-6 cities tab-pane fade show active m-3 " style="max-width:400px">
+                        <div style="" class="destination-img h-100">
+                            <img class="loaded-image img-fluid rounded h-100 w-100" src="data:image/jpg;base64,@place.CityImage" alt="@place.CityName">
                             <div class="destination-overlay p-3">
-                                <h4 class="loaded-image-name text-white mb-2 mt-3">@place.CityName</h4>
-                                <a href="#" class="btn-hover-text-warning text-white">View All Hotels 
-                                    <i class="fa fa-arrow-right ms-2"></i>
-                                </a>
+                                  <h4 class="loaded-image-name text-white mb-2 mt-3" name="cityname">@place.CityName</h4>
+                                    <a class="btn-hover-text-warning text-white" asp-controller="Search" asp-action="Index" asp-route-city="@place.CityName">
+                                        View All Hotels
+                                        <i class="fa fa-arrow-right ms-2"></i>
+                                    </a>                               
                             </div>
-                            <div class="search-icon">
-                                <a href="@place." data-lightbox="@place.CityName">
+                           @*  <div class="search-icon">
+                                
+                                <a  data-lightbox="@place.CityName" asp-controller="Search" asp-action="Index" asp-route-city="@place.CityImage">
                                     <i class="fa fa-plus-square fa-1x btn btn-light btn-lg-square text-primary"></i>
                                 </a>
-                            </div>
+                            </div> *@
                         </div>
                     </div>
                     i++;
@@ -244,12 +246,10 @@
                 success: function (data) {
 
                     for (let idx = 0; idx < data.length; idx++){
-                        var cityElement = cities[idx].cloneNode(true);
                         big.append(cities[idx]);
-                        cityElement.querySelector(".loaded-image").src = 'data:image/jpg;base64,' + data[idx]._image;
-                        cityElement.querySelector(".loaded-image-name").innerHTML = data[idx]._name;
-                        console.log("name " + data[idx]._name);
-                        console.log(cities);
+                        document.querySelectorAll(".loaded-image")[idx].src = 'data:image/jpg;base64,' + data[idx]._image
+                        document.querySelectorAll(".loaded-image-name")[idx].innerHTML = data[idx]._name
+                        
                     }
                 }, 
                 error: function (xhr, status, error) {
@@ -266,81 +266,4 @@
     });
 </script>
 
-<!--ajax start-->
-@* <script>
-    $(document).ready(function () {
-        function loadImagesForCountry(CountryName) {
-            $.ajax({
-                url: '/Home/RenderImagesUsingAJAX',
-                type: 'GET',
-                data: { CountryName: CountryName },
-                success: function (data) {
-                    $('.destination-img').empty();
-                    var tabContent = $('#tab-' + CountryName + ' .tab-pane');
-                    tabContent.empty();
-                    if (!data || data.length === 0) {
-                        tabContent.html('<p>No images found for this country.</p>');
-                    } else {
-                        data.forEach(function (img) {
-                            var destinationImgDiv = $('<div>', {
-                                'class': 'tab-pane fade show m-3 col-lg-4'
-                            });
 
-                            var destinationImgContainer = $('<div>', {
-                                'class': 'destination-img'
-                            });
-
-                            var imageElement = $('<img>', {
-                                'src': 'data:image/jpg;base64,' + img,
-                                'class': 'img-fluid rounded w-100',
-                                'alt': 'City Image'
-                            });
-
-                            var overlayElement = $('<div>', {
-                                'class': 'destination-overlay p-3'
-                            }).append(
-                                $('<h4>', {
-                                    'class': 'text-white mb-2 mt-3',
-                                    'text': 'City Name'
-                                }),
-                                $('<a>', {
-                                    'href': '#',
-                                    'class': 'btn-hover-text-warning text-white',
-                                    'text': 'View All Hotels'
-                                }).append($('<i>', {
-                                    'class': 'fa fa-arrow-right ms-2'
-                                }))
-                            );
-
-                            var searchIconElement = $('<div>', {
-                                'class': 'search-icon'
-                            }).append(
-                                $('<a>', {
-                                    'href': '#',
-                                    'data-lightbox': 'City Name'
-                                }).append($('<i>', {
-                                    'class': 'fa fa-plus-square fa-1x btn btn-light btn-lg-square text-primary'
-                                }))
-                            );
-
-                            destinationImgContainer.append(imageElement, overlayElement, searchIconElement);
-                            destinationImgDiv.append(destinationImgContainer);
-                            tabContent.append(destinationImgDiv);
-                        });
-                    }
-                    console.log("Images loaded for " + CountryName + "!");
-                },
-                error: function (xhr, status, error) {
-                    console.error('Error:', error);
-                    $('#tab-' + CountryName + ' .tab-pane').html('<p>Error loading images. Please try again later.</p>');
-                }
-            });
-        }
-
-        $('.nav-link').click(function () {
-            var countryName = $(this).data('country');
-            loadImagesForCountry(countryName);
-        });
-    });
-</script> *@
-<!-- ajax end-->

@@ -30,8 +30,8 @@ namespace BookingSystem.Service
 
             CreateMap<UserProfileViewModel, ApplicationUser>()
                 .ForMember(dest => dest.Image, opt => opt.MapFrom(src => ConvertFormFileToByteArray(src.ImageForm)));
-            //CreateMap<ApplicationUser, UserProfileViewModel>()
-            //    .ForMember(dest => dest.Image, opt => opt.MapFrom(src => ConvertByteArrayToFormFile(src.Image)));
+
+            
             CreateMap<ApplicationUser, UserProfileViewModel>()
                 .ForMember(dest => dest.Image, opt => opt.MapFrom(src => src.Image))
                 .ForMember(dest => dest.ImageForm, opt => opt.MapFrom(src => ConvertByteArrayToFormFile(src.Image)));

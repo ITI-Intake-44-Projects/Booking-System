@@ -18,23 +18,23 @@ namespace BookingSystem.ViewModels
         public string Gender { get; set; }
 
         [DataType(DataType.Password)]
-        [MinLength(8, ErrorMessage = "Passowrd length should be over 8 characters")]
-        public string Password { get; set; }
-        [DataType(DataType.Password)]
 
+        public string Password { get; set; }
+
+        [DataType(DataType.Password)]
         [Compare("Password")]
         public string ConfirmPassword { get; set; }
 
         public string PhoneNumber { get; set; }
 
-        public string Address { get; set; }
+        public string? Address { get; set; }
 
         public string City { get; set; }
 
         public string Country { get; set; }
 
         [DataType(DataType.Upload)]
-        public IFormFile Image { get; set; }
+        public IFormFile? Image { get; set; }
 
         public List<string>? Countires { get; set; }
 
