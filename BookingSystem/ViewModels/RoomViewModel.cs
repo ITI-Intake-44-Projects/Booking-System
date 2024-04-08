@@ -5,7 +5,7 @@
 
         public int? RoomID { get; set; }
 
-        public string ?RoomType { get; set; }
+        public string? RoomType { get; set; }
 
         public decimal? PriceOfNight { get; set; }
 
