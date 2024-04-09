@@ -1,0 +1,102 @@
+﻿@model InsertHotelViewModel
+<br />
+<br />
+<br />
+<br />
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <form asp-action="Create" method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                <div class="form-group mb-3">
+                    <label asp-for="Name" class="control-label">Hotel Name</label>
+                    <input asp-for="Name" class="form-control" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+                                
+                <div class="form-group mb-3">
+                    <label asp-for="HotelType" class="control-label">Hotel Type</label>
+                    <select asp-for="HotelType" class="form-control">
+                        <option value="">Select Hotel Type</option>
+                        <option value="Motel">Motel</option>
+                        <option value="Hostel">Hostel</option>
+                        <option value="Budget">Budget</option>
+                        <option value="Luxury">Luxury</option>
+                        <option value="Resort">Resort</option>
+                        <option value="Boutique">Boutique</option>
+                        <option value="Guesthouse">Guesthouse</option>
+                        <option value="BedAndBreakfast">BedAndBreakfast</option>
+                    </select>
+                    <span asp-validation-for="HotelType" class="text-danger"></span>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label asp-for="HotelDescription" class="control-label">Description</label>
+                    <textarea asp-for="HotelDescription" class="form-control"></textarea>
+                    <span asp-validation-for="HotelDescription" class="text-danger"></span>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label class="control-label">Country</label>
+                    <select id="countrySelect" class="form-control">
+                        <option value="">Select Country</option>
+                    </select>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label class="control-label">City</label>
+                    <select id="citySelect" class="form-control">
+                        <option value="">Select City</option>
+                    </select>
+                </div>
+
+                <div class="text-center mb-3">
+                    <button type="submit" class="btn btn-primary">Add Hotel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+
+        var countryCities = {
+            "Egypt": ["Hurghada", "Sharm El Sheikh", "Cairo", "Alex"],
+            "USA": ["New York", "Los Angeles", "Chicago", "San Francisco"],
+            "United Kingdom": ["London", "Manchester", "Birmingham", "Edinburgh"],
+            "France": ["Paris", "Marseille", "Lyon", "Nice"],
+            "Germany": ["Berlin", "Munich", "Hamburg", "Frankfurt"]
+        };
+
+        
+        var countrySelect = document.getElementById("countrySelect");
+        for (var country in countryCities) {
+            var option = document.createElement("option");
+            option.text = country;
+            countrySelect.add(option);
+        }
+
+        
+        function updateCityDropdown() {
+            var country = countrySelect.value;
+            var citySelect = document.getElementById("citySelect");
+            citySelect.innerHTML = ""; 
+
+            if (country) {
+                var cities = countryCities[country];
+                cities.forEach(function(city) {
+                    var option = document.createElement("option");
+                    option.text = city;
+                    citySelect.add(option);
+                });
+            }
+        }
+
+        countrySelect.addEventListener("change", updateCityDropdown);
+        
+        updateCityDropdown();
+    </script>
+}

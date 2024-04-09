@@ -109,8 +109,8 @@
                 </li>
                 <li class="nav-item">
                     <a class="d-flex mx-3 py-2 border border-primary bg-light rounded-pill nav-link"
-                       data-bs-toggle="pill" href="#tab-Morocco" data-country="Morocco">
-                        <span class="text-dark" style="width: 150px;">Morocco</span>
+                       data-bs-toggle="pill" href="#tab-Saudia-Aribia" data-country="Saudia Aribia">
+                        <span class="text-dark" style="width: 150px;">Saudia Aribia</span>
                     </a>
                 </li>
                 <li class="nav-item">
@@ -125,7 +125,12 @@
                 {
                     <div id="tab-@i" class="cities tab-pane fade show active m-3 col-lg-4">
                         <div style="height:300px" class="destination-img">
-                            <img style="height:100%;width:100%;object-fit:cover;object-position:center" class="loaded-image img-fluid rounded w-100" src="data:image/jpg;base64,@place.CityImage" alt="@place.CityName">
+                            
+                            <img style="height:100%;width:100%;object-fit:cover;object-position:center" 
+                                 class="loaded-image img-fluid rounded w-100" 
+                                 src="data:image/jpg;base64,@place.CityImage" 
+                                 alt="@place.CityName">
+
                             <div class="destination-overlay p-3">
                                 <h4 class="loaded-image-name text-white mb-2 mt-3">@place.CityName</h4>
                                 <a href="#" class="btn-hover-text-warning text-white">View All Hotels 
@@ -264,82 +269,3 @@
         loadImages(countryName);
     });
 </script>
-
-<!--ajax start-->
-@* <script>
-    $(document).ready(function () {
-        function loadImagesForCountry(CountryName) {
-            $.ajax({
-                url: '/Home/RenderImagesUsingAJAX',
-                type: 'GET',
-                data: { CountryName: CountryName },
-                success: function (data) {
-                    $('.destination-img').empty();
-                    var tabContent = $('#tab-' + CountryName + ' .tab-pane');
-                    tabContent.empty();
-                    if (!data || data.length === 0) {
-                        tabContent.html('<p>No images found for this country.</p>');
-                    } else {
-                        data.forEach(function (img) {
-                            var destinationImgDiv = $('<div>', {
-                                'class': 'tab-pane fade show m-3 col-lg-4'
-                            });
-
-                            var destinationImgContainer = $('<div>', {
-                                'class': 'destination-img'
-                            });
-
-                            var imageElement = $('<img>', {
-                                'src': 'data:image/jpg;base64,' + img,
-                                'class': 'img-fluid rounded w-100',
-                                'alt': 'City Image'
-                            });
-
-                            var overlayElement = $('<div>', {
-                                'class': 'destination-overlay p-3'
-                            }).append(
-                                $('<h4>', {
-                                    'class': 'text-white mb-2 mt-3',
-                                    'text': 'City Name'
-                                }),
-                                $('<a>', {
-                                    'href': '#',
-                                    'class': 'btn-hover-text-warning text-white',
-                                    'text': 'View All Hotels'
-                                }).append($('<i>', {
-                                    'class': 'fa fa-arrow-right ms-2'
-                                }))
-                            );
-
-                            var searchIconElement = $('<div>', {
-                                'class': 'search-icon'
-                            }).append(
-                                $('<a>', {
-                                    'href': '#',
-                                    'data-lightbox': 'City Name'
-                                }).append($('<i>', {
-                                    'class': 'fa fa-plus-square fa-1x btn btn-light btn-lg-square text-primary'
-                                }))
-                            );
-
-                            destinationImgContainer.append(imageElement, overlayElement, searchIconElement);
-                            destinationImgDiv.append(destinationImgContainer);
-                            tabContent.append(destinationImgDiv);
-                        });
-                    }
-                    console.log("Images loaded for " + CountryName + "!");
-                },
-                error: function (xhr, status, error) {
-                    console.error('Error:', error);
-                    $('#tab-' + CountryName + ' .tab-pane').html('<p>Error loading images. Please try again later.</p>');
-                }
-            });
-        }
-
-        $('.nav-link').click(function () {
-            var countryName = $(this).data('country');
-            loadImagesForCountry(countryName);
-        });
-    });
-</script> *@
-<!-- ajax end-->
