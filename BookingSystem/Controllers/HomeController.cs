@@ -23,7 +23,7 @@ namespace BookingSystem.Controllers
             this.locationRepository = locationRepository;
         }
 
-        [Authorize]
+        //[Authorize]
         public IActionResult Index()
         {
             try 

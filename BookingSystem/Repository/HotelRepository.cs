@@ -9,7 +9,7 @@ namespace BookingSystem.Repository
         public HotelRepository(BookingContext _context) : base(_context)
         {
         }
-
+            
         public Task<int> GetCountAsync()
         {
             return context.Hotels.CountAsync();

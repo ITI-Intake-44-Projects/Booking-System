@@ -76,12 +76,13 @@
 <!--search bar start-->
 <div class="container-fluid search-bar position-relative" style="top: -50%; transform: translateY(-50%);">
     <div class="container">
-
-        <div class="position-relative rounded-pill w-100 mx-auto p-5" style="background: rgba(19, 53, 123, 0.8);">
-            <input class="form-control border-0 rounded-pill w-100 py-3 ps-4 pe-5" type="text" placeholder="Eg: Thailand">
-            <input name="dates" placeholder="checkout/in" type="text" class="btn btn-primary position-absolute  border-0 rounded " style="top:110px;left:50%;transform:translateX(-50%) " />
-            <button type="button" class="btn btn-primary rounded-pill py-2 px-4 position-absolute me-2" style="top: 50%; right: 46px; transform: translateY(-50%);">Search</button>
-        </div>
+        <form asp-action="Index" asp-controller="Search" method="post" enctype="multipart/form-data">
+            <div class="position-relative rounded-pill w-100 mx-auto p-5" style="background: rgba(19, 53, 123, 0.8);">
+                <input class="form-control border-0 rounded-pill w-100 py-3 ps-4 pe-5" type="text" placeholder="Eg: Thailand" name="city">
+                <input name="dates" placeholder="checkout/in" type="text" class="btn btn-primary position-absolute  border-0 rounded " style="top:110px;left:50%;transform:translateX(-50%) " />
+                <button type="submit" class="btn btn-primary rounded-pill py-2 px-4 position-absolute me-2" style="top: 50%; right: 46px; transform: translateY(-50%);">Search</button>
+            </div>
+        </form>
     </div>
 </div>
 <!--search bar end-->
@@ -109,8 +110,8 @@
                 </li>
                 <li class="nav-item">
                     <a class="d-flex mx-3 py-2 border border-primary bg-light rounded-pill nav-link"
-                       data-bs-toggle="pill" href="#tab-Saudia-Aribia" data-country="Saudia Aribia">
-                        <span class="text-dark" style="width: 150px;">Saudia Aribia</span>
+                       data-bs-toggle="pill" href="#tab-Morocco" data-country="Indonesia">
+                        <span class="text-dark" style="width: 150px;">Indonesia</span>
                     </a>
                 </li>
                 <li class="nav-item">
@@ -123,25 +124,22 @@
             <div class="row g-2 tab-content" id="big">
                 @foreach (var place in Model)
                 {
-                    <div id="tab-@i" class="cities tab-pane fade show active m-3 col-lg-4">
-                        <div style="height:300px" class="destination-img">
-                            
-                            <img style="height:100%;width:100%;object-fit:cover;object-position:center" 
-                                 class="loaded-image img-fluid rounded w-100" 
-                                 src="data:image/jpg;base64,@place.CityImage" 
-                                 alt="@place.CityName">
-
+                    <div id="tab-@i" class="col-lg-4 col-md-6 cities tab-pane fade show active m-3 " style="max-width:400px">
+                        <div style="" class="destination-img h-100">
+                            <img class="loaded-image img-fluid rounded h-100 w-100" src="data:image/jpg;base64,@place.CityImage" alt="@place.CityName">
                             <div class="destination-overlay p-3">
-                                <h4 class="loaded-image-name text-white mb-2 mt-3">@place.CityName</h4>
-                                <a href="#" class="btn-hover-text-warning text-white">View All Hotels 
-                                    <i class="fa fa-arrow-right ms-2"></i>
-                                </a>
+                                  <h4 class="loaded-image-name text-white mb-2 mt-3" name="cityname">@place.CityName</h4>
+                                    <a class="btn-hover-text-warning text-white" asp-controller="Search" asp-action="Index" asp-route-city="@place.CityName">
+                                        View All Hotels
+                                        <i class="fa fa-arrow-right ms-2"></i>
+                                    </a>                               
                             </div>
-                            <div class="search-icon">
-                                <a href="@place." data-lightbox="@place.CityName">
+                           @*  <div class="search-icon">
+                                
+                                <a  data-lightbox="@place.CityName" asp-controller="Search" asp-action="Index" asp-route-city="@place.CityImage">
                                     <i class="fa fa-plus-square fa-1x btn btn-light btn-lg-square text-primary"></i>
                                 </a>
-                            </div>
+                            </div> *@
                         </div>
                     </div>
                     i++;
@@ -248,12 +246,10 @@
                 success: function (data) {
 
                     for (let idx = 0; idx < data.length; idx++){
-                        var cityElement = cities[idx].cloneNode(true);
                         big.append(cities[idx]);
-                        cityElement.querySelector(".loaded-image").src = 'data:image/jpg;base64,' + data[idx]._image;
-                        cityElement.querySelector(".loaded-image-name").innerHTML = data[idx]._name;
-                        console.log("name " + data[idx]._name);
-                        console.log(cities);
+                        document.querySelectorAll(".loaded-image")[idx].src = 'data:image/jpg;base64,' + data[idx]._image
+                        document.querySelectorAll(".loaded-image-name")[idx].innerHTML = data[idx]._name
+                        
                     }
                 }, 
                 error: function (xhr, status, error) {
@@ -269,3 +265,5 @@
         loadImages(countryName);
     });
 </script>
+
+

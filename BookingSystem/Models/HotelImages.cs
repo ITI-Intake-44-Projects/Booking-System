@@ -5,10 +5,10 @@ namespace BookingSystem.Models
 {
     public class HotelImages
     {
-        public byte[] Image { get; set; }
+        public byte[]? Image { get; set; }
 
         [ForeignKey("Hotel")]
-        public int HotelId { get; set; }
+        public int? HotelId { get; set; }
 
         public virtual Hotel? Hotel {  get; set; }
         
