@@ -36,6 +36,11 @@ namespace BookingSystem.Repository
             T obj = Get(id);
             context.Set<T>().Remove(obj);
         }
+        // overloaded
+        public void Delete(T obj)
+        {
+            context.Set<T>().Remove(obj);
+        }
 
         public int Save()
         {

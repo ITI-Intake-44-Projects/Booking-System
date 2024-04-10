@@ -23,7 +23,7 @@ namespace BookingSystem.Controllers
             this.locationRepository = locationRepository;
         }
 
-        //[Authorize]
+        [Authorize]
         public IActionResult Index()
         {
             try 
@@ -49,14 +49,8 @@ namespace BookingSystem.Controllers
         [HttpGet]
         public IActionResult RenderImagesUsingAJAX(string CountryName)
         {
-            //try {
-                var images = locationRepository.GetImagesByCountryName(CountryName);
-
-                return Json(images);
-            //} catch (Exception ex) {
-            //    logger.LogError(ex, "Error occurred while fetching images for country: {0}", CountryName);
-             //   return StatusCode(500, "An error occurred while fetching images for the country.");
-            //}
+            var images = locationRepository.GetImagesByCountryName(CountryName);
+            return Json(images);
         }
 
         public IActionResult Privacy()

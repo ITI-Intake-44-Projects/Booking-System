@@ -14,11 +14,11 @@ builder.Services.AddAutoMapper(typeof(Program));
 builder.Services.AddAutoMapper(typeof(MappingProfile));
 
 
-
 builder.Services.AddDbContext<BookingContext>(options => {
-                    options.UseSqlServer(builder.Configuration.GetConnectionString("conn"))
-                           .UseLazyLoadingProxies();
-                    });
+    options.UseSqlServer(builder.Configuration.GetConnectionString("conn"))
+            .UseLazyLoadingProxies();
+    }
+);
 
 
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options => {
@@ -26,6 +26,8 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options => {
                     options.Password.RequiredLength = 5;
                 }).AddEntityFrameworkStores<BookingContext>();
 
+builder.Services.AddScoped<IHotelRepository, HotelRepository>();
+builder.Services.AddScoped<IRepository<Hotel>, Repository<Hotel>>();
 builder.Services.AddScoped<IBookingRepository, BookingRepository>();
 builder.Services.AddScoped<ILocationRepository, LocationRepository>();
 builder.Services.AddScoped<IHotelRepository, HotelRepository>();
