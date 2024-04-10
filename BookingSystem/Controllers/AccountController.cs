@@ -29,6 +29,8 @@ namespace BookingSystem.Controllers
             return RedirectToAction("Register");   
         }
 
+      
+
         [HttpGet]
         public IActionResult Register()
         {
@@ -37,6 +39,7 @@ namespace BookingSystem.Controllers
             userVm.Countires = location.GetDistinctCountries();
             return View("Register",userVm);
         }
+       
 
         [HttpPost]
         public async Task<IActionResult> Register(RegisterUserVM userVM)
@@ -59,6 +62,39 @@ namespace BookingSystem.Controllers
             userVM.Cities = location.GetCities();
             userVM.Countires = location.GetDistinctCountries();
             return View("Register",userVM);
+        }
+
+        //Register as an admin 
+        [HttpGet]
+        public IActionResult RegisterAdmin()
+        {
+            RegisterUserVM userVm = new RegisterUserVM();
+            userVm.Cities = location.GetCities();
+            userVm.Countires = location.GetDistinctCountries();
+            return View("RegisterAdmin", userVm);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> RegisterAdmin(RegisterUserVM userVM)
+        {
+            if (ModelState.IsValid == true)
+            {
+                ApplicationUser user = Mapper.Map<RegisterUserVM, ApplicationUser>(userVM);
+                IdentityResult result = await userManager.CreateAsync(user, userVM.Password);
+
+                if (result.Succeeded)
+                {
+                    IdentityResult resultRole = await userManager.AddToRoleAsync(user, "Admin");
+                    await signInManager.SignInAsync(user, false);
+                    return RedirectToAction("Login");
+                }
+                foreach (var item in result.Errors)
+                    ModelState.AddModelError("", item.Description);
+            }
+
+            userVM.Cities = location.GetCities();
+            userVM.Countires = location.GetDistinctCountries();
+            return View("RegisterAdmin", userVM);
         }
 
 
@@ -97,9 +133,6 @@ namespace BookingSystem.Controllers
 
         public IActionResult Details(ApplicationUser Appuser)
         {
-
-          
-
             return View("Details");
         }
     }
