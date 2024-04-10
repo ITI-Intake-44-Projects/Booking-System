@@ -9,10 +9,9 @@
     <thead>
         <tr>
             <th>Name</th>
-            <th>Hotel Type</th>
             <th>Description</th>
-            <th>Address</th>
             <th>Location</th>
+            @* <th>Image</th> *@
             <th>Action</th>
         </tr>
     </thead>
@@ -21,10 +20,9 @@
         {
             <tr>
                 <td>@hotel.Name</td>
-                <td>@hotel.HotelType</td>
                 <td>@hotel.HotelDescription</td>
-                <td>@hotel.Address</td>
-                <td>@hotel.Location.City, @hotel.Location.Country</td>
+                <td>@hotel.City, @hotel.Country</td>
+                @* <td><img class="loaded-image img-fluid rounded h-100 w-100" src="data:image/jpg;base64,@hotel.Image" alt="@hotel.Name"></td> *@
                 <td>
                     <a asp-action="Edit" asp-route-id="@hotel.HotelId"><i class="fas fa-edit"></i></a> |
                     <a asp-action="Delete" asp-route-id="@hotel.HotelId"><i class="fas fa-trash-alt text-danger"></i></a>

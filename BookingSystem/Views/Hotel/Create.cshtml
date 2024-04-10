@@ -1,8 +1,11 @@
 ﻿@model InsertHotelViewModel
-<br />
-<br />
-<br />
-<br />
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "_LoggedLayout";
+}
+
+<br /> <br /> <br /> <br />
 
 <div class="container">
     <div class="row justify-content-center">
@@ -15,22 +18,6 @@
                     <input asp-for="Name" class="form-control" />
                     <span asp-validation-for="Name" class="text-danger"></span>
                 </div>
-                                
-                <div class="form-group mb-3">
-                    <label asp-for="HotelType" class="control-label">Hotel Type</label>
-                    <select asp-for="HotelType" class="form-control">
-                        <option value="">Select Hotel Type</option>
-                        <option value="Motel">Motel</option>
-                        <option value="Hostel">Hostel</option>
-                        <option value="Budget">Budget</option>
-                        <option value="Luxury">Luxury</option>
-                        <option value="Resort">Resort</option>
-                        <option value="Boutique">Boutique</option>
-                        <option value="Guesthouse">Guesthouse</option>
-                        <option value="BedAndBreakfast">BedAndBreakfast</option>
-                    </select>
-                    <span asp-validation-for="HotelType" class="text-danger"></span>
-                </div>
 
                 <div class="form-group mb-3">
                     <label asp-for="HotelDescription" class="control-label">Description</label>
@@ -38,18 +25,31 @@
                     <span asp-validation-for="HotelDescription" class="text-danger"></span>
                 </div>
 
-                <div class="form-group mb-3">
-                    <label class="control-label">Country</label>
-                    <select id="countrySelect" class="form-control">
-                        <option value="">Select Country</option>
-                    </select>
+                <div style="display: flex;">
+                    <div class="form-group col-md-6" style="margin-right: 5px;">
+                        <label class="control-label">Country</label>
+                        <select id="countrySelect" class="form-control">
+                            <option name="Country" value="">Select Country</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group col-md-6">
+                        <label class="control-label">City</label>
+                        <select id="citySelect" class="form-control">
+                            <option name="City" value="">Select City</option>
+                        </select>
+                    </div>
                 </div>
 
+                @* <div class="form-group mb-3">
+                    <label asp-for="ImageFile" class="control-label">Choose Image</label>
+                    <input asp-for="ImageFile" type="file" class="form-control" />
+                    <span asp-validation-for="ImageFile" class="text-danger"></span>
+                </div> *@
+
                 <div class="form-group mb-3">
-                    <label class="control-label">City</label>
-                    <select id="citySelect" class="form-control">
-                        <option value="">Select City</option>
-                    </select>
+                    <input type="hidden" id="selectedCountry" name="Country" />
+                    <input type="hidden" id="selectedCity" name="City" />
                 </div>
 
                 <div class="text-center mb-3">
@@ -59,6 +59,7 @@
         </div>
     </div>
 </div>
+
 
 @section Scripts {
     <script>
@@ -71,32 +72,59 @@
             "Germany": ["Berlin", "Munich", "Hamburg", "Frankfurt"]
         };
 
-        
+
         var countrySelect = document.getElementById("countrySelect");
+        var citySelect = document.getElementById("citySelect");
+        
+        //hidden
+        var selectedCountryInput = document.getElementById("selectedCountry");
+        var selectedCityInput = document.getElementById("selectedCity");
+
         for (var country in countryCities) {
             var option = document.createElement("option");
             option.text = country;
+            option.value = country;
             countrySelect.add(option);
+            //console.log(countrySelect);
         }
 
-        
         function updateCityDropdown() {
             var country = countrySelect.value;
-            var citySelect = document.getElementById("citySelect");
-            citySelect.innerHTML = ""; 
+            //console.log("country: " + country);
+
+            citySelect.innerHTML = "";
 
             if (country) {
+                //console.log("tests");
                 var cities = countryCities[country];
-                cities.forEach(function(city) {
+                cities.forEach(function (city) {
                     var option = document.createElement("option");
                     option.text = city;
+                    option.value = city;
                     citySelect.add(option);
                 });
             }
+            selectedCountryInput.value = country;
+            selectedCityInput.value = citySelect.value;
+
+            var countryOption = countrySelect.querySelector("option[value='" + selectedCountryInput.value + "']");
+            if (countryOption) {
+                countryOption.selected = true;
+            }
+            var cityOption = citySelect.querySelector("option[value='" + selectedCityInput.value + "']");
+            if (cityOption) {
+                cityOption.selected = true;
+            }
+
+            //console.log("selectedCountryInput: " + selectedCountryInput);
+            //console.log("selectedCityInput: " + selectedCityInput.value);
         }
 
         countrySelect.addEventListener("change", updateCityDropdown);
-        
-        updateCityDropdown();
+        citySelect.addEventListener("change", function () {
+            selectedCityInput.value = citySelect.value;
+        });
+
+        //updateCityDropdown();
     </script>
 }

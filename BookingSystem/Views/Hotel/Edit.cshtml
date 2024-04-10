@@ -22,7 +22,7 @@
                     <span asp-validation-for="Name" class="text-danger"></span>
                 </div>
 
-                <div class="form-group mb-3">
+                @* <div class="form-group mb-3">
                     <label asp-for="HotelType" class="control-label">Hotel Type</label>
                     <select asp-for="HotelType" class="form-control">
                         <option value="">Select Hotel Type</option>
@@ -36,7 +36,7 @@
                         <option value="BedAndBreakfast">BedAndBreakfast</option>
                     </select>
                     <span asp-validation-for="HotelType" class="text-danger"></span>
-                </div>
+                </div> *@
 
                 <div class="form-group mb-3">
                     <label asp-for="HotelDescription" class="control-label">Description</label>
@@ -44,24 +44,31 @@
                     <span asp-validation-for="HotelDescription" class="text-danger"></span>
                 </div>
 
-                <div class="form-group mb-3">
-                    <label class="control-label">Country</label>
-                    <select id="countrySelect" class="form-control">
-                        <option value="">Select Country</option>
-                    </select>
+                <div style="display: flex;">
+                    <div class="form-group col-md-6" style="margin-right: 10px;">
+                        <label class="control-label">Country</label>
+                        <select id="countrySelect" class="form-control">
+                            <option name="Country" value="">Select Country</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group col-md-6">
+                        <label class="control-label">City</label>
+                        <select id="citySelect" class="form-control">
+                            <option name="City" value="">Select City</option>
+                        </select>
+                    </div>
                 </div>
 
-                <div class="form-group mb-3">
-                    <label class="control-label">City</label>
-                    <select id="citySelect" class="form-control">
-                        <option value="">Select City</option>
-                    </select>
-                </div>
-
+                @* <div class="form-group mb-3">
+                    <label asp-for="ImageFile" class="control-label">Choose Image</label>
+                    <input asp-for="ImageFile" type="file" class="form-control" />
+                    <span asp-validation-for="ImageFile" class="text-danger"></span>
+                </div> *@
 
                 <div class="form-group mb-3">
-                    <input type="hidden" id="selectedCountry" name="SelectedCountry" />
-                    <input type="hidden" id="selectedCity" name="SelectedCity" />
+                    <input type="hidden" id="selectedCountry" name="Country" />
+                    <input type="hidden" id="selectedCity" name="City" />
                 </div>
 
                 <div class="text-center mb-3">
@@ -86,6 +93,7 @@
 
         var countrySelect = document.getElementById("countrySelect");
         var citySelect = document.getElementById("citySelect");
+        
         //hidden
         var selectedCountryInput = document.getElementById("selectedCountry");
         var selectedCityInput = document.getElementById("selectedCity");
@@ -100,7 +108,7 @@
 
         function updateCityDropdown() {
             var country = countrySelect.value;
-            console.log("country: " + country);
+            //console.log("country: " + country);
 
             citySelect.innerHTML = "";
 
@@ -126,8 +134,8 @@
                 cityOption.selected = true;
             }
 
-            console.log("selectedCountryInput: " + selectedCountryInput);
-            console.log("selectedCityInput: " + selectedCityInput.value);
+            //console.log("selectedCountryInput: " + selectedCountryInput);
+            //console.log("selectedCityInput: " + selectedCityInput.value);
         }
 
         countrySelect.addEventListener("change", updateCityDropdown);
@@ -135,6 +143,6 @@
             selectedCityInput.value = citySelect.value;
         });
 
-        updateCityDropdown();
+        //updateCityDropdown();
     </script>
 }

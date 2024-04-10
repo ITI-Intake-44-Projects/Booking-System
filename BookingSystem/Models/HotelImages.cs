@@ -11,7 +11,5 @@ namespace BookingSystem.Models
         public int? HotelId { get; set; }
 
         public virtual Hotel? Hotel {  get; set; }
-        
-
     }
 }

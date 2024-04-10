@@ -11,16 +11,16 @@ namespace BookingSystem.ViewModels.HotelViewModels
         [MaxLength(100, ErrorMessage = "Name cannot exceed 100 characters.")]
         public string Name { get; set; }
 
-        [MaxLength(50)]
-        public string HotelType { get; set; }
-
         public string HotelDescription { get; set; }
 
-        //public string Address { get; set; }
-
+        [Required(ErrorMessage = "City is required.")]
         public string City { get; set; }
         
+        [Required(ErrorMessage = "Country is required.")]
         public string Country { get; set; }
+
+        //[Required(ErrorMessage = "Please choose an image.")]
+        //public IFormFile ImageFile { get; set; }
     }
 
 }

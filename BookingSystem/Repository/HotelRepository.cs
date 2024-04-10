@@ -31,5 +31,10 @@ namespace BookingSystem.Repository
         {
             return context.Hotels.FindAsync(id);
         }
+
+        public List<Hotel> GetHotelsByCity(string city)
+        {
+            return context.Hotels.Where(h => h.Location.City == city).ToList();
+        }
     }
 }

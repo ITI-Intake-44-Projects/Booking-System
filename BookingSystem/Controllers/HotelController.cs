@@ -22,11 +22,10 @@ namespace BookingSystem.Controllers
             this.hotelRepository = hotelRepository;
         }
 
-        // GET: Hotel
         public async Task<IActionResult> Index(int? page)
         {
             int pageNumber = page ?? 1;
-            int pageSize = 5;
+            int pageSize = 7;
 
             var hotels = await hotelRepository.GetByPageAsync(pageNumber, pageSize);
 
@@ -36,60 +35,76 @@ namespace BookingSystem.Controllers
 
             var viewModel = new HotelListViewModel
             {
+                PageNumber = pageNumber,
+                TotalPages = totalPages,
                 Hotels = hotels.Select(h => new HotelViewModel
                 {
                     HotelId = h.HotelId,
                     Name = h.Name,
-                    HotelType = h.HotelType,
+                    //HotelType = h.HotelType,
                     HotelDescription = h.HotelDescription,
-                    Address = h.Address,
-                    Location = new LocationViewModel
-                    {
-                        City = h.Location?.City,
-                        Country = h.Location?.Country
-                    }
-                }).ToList(),
-                PageNumber = pageNumber,
-                TotalPages = totalPages
-            };
+                    City = h.Location?.City,
+                    Country = h.Location?.Country,
+                    //Image = h.HotelImages.FirstOrDefault()?.Image,
 
+                }).ToList(),
+            };
             return View(viewModel);
         }
 
-        // GET: Hotel/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Hotel/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(InsertHotelViewModel model)
         {
             if (ModelState.IsValid)
             {
-                var hotel = new Hotel
+                var existingLocation = context.Locations.FirstOrDefault(loc => loc.City == model.City && loc.Country == model.Country);
+
+                Location location;
+                Hotel hotel;
+
+                if (existingLocation == null)
                 {
-                    Name = model.Name,
-                    HotelType = model.HotelType,
-                    HotelDescription = model.HotelDescription,
-                    Location = new Location
-                    {
-                        Country = model.Country,
-                        City = model.City
-                    }
-                };
+                    location = new Location { Country = model.Country, City = model.City };
+                    context.Locations.Add(location);
+                }
+                else
+                {
+                    location = existingLocation;
+                }
+
+                //byte[]? imageData = null;
+                //if (model.ImageFile != null && model.ImageFile.Length > 0)
+                //{
+                //    using (var memoryStream = new MemoryStream())
+                //    {
+                //        await model.ImageFile.CopyToAsync(memoryStream);
+                //        imageData = memoryStream.ToArray();
+                //    }
+                //}
+
+                hotel = new Hotel { Name = model.Name, Location = location, HotelDescription=model.HotelDescription};
 
                 context.Add(hotel);
-                await context.SaveChangesAsync(); //repository.Update(hotel);
-                
+                await context.SaveChangesAsync();
+
+                //if (imageData != null)
+                //{
+                //    var hotelImage = new HotelImages { Image = imageData, HotelId = hotel.HotelId };
+                //    context.Add(hotelImage);
+                //    await context.SaveChangesAsync();
+                //}
+
                 return RedirectToAction(nameof(Index));
             }
             return View(model);
         }
 
-        // GET: Hotel/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -97,7 +112,7 @@ namespace BookingSystem.Controllers
                 return NotFound();
             }
 
-            var hotel = await context.Hotels.Where(h => h.HotelId == id).Include(h => h.Location).FirstAsync();
+            var hotel = await context.Hotels.Include(h => h.Location).FirstOrDefaultAsync(h => h.HotelId == id);
             if (hotel == null)
             {
                 return NotFound();
@@ -107,7 +122,7 @@ namespace BookingSystem.Controllers
             {
                 HotelId = hotel.HotelId,
                 Name = hotel.Name,
-                HotelType = hotel.HotelType,
+                //HotelType = hotel.HotelType,
                 HotelDescription = hotel.HotelDescription,
                 City = hotel.Location.City,
                 Country = hotel.Location.Country,
@@ -116,7 +131,6 @@ namespace BookingSystem.Controllers
             return View(viewModel);
         }
 
-        // POST: Hotel/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, EditHotelViewModel model)
@@ -126,22 +140,21 @@ namespace BookingSystem.Controllers
             {
                 try
                 {
-                    var hotel = await context.Hotels.Where(h => h.HotelId == id).Include(h => h.Location).FirstAsync();
-                    
+                    var hotel = await context.Hotels.Include(h => h.Location).FirstOrDefaultAsync(h => h.HotelId == id);
+
                     if (hotel == null)
                     {
                         return NotFound();
                     }
 
                     hotel.Name = model.Name;
-                    hotel.HotelId = model.HotelId;
                     hotel.Location.City = model.City;
-                    hotel.HotelType = model.HotelType;
+                    //hotel.HotelType = model.HotelType;
                     hotel.Location.Country = model.Country;
                     hotel.HotelDescription = model.HotelDescription;
 
                     context.Update(hotel);
-                    context.SaveChangesAsync();
+                    await context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -159,29 +172,43 @@ namespace BookingSystem.Controllers
             return View(model);
         }
 
-        // GET: Hotel/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null) {
+            if (id == null)
+            {
                 return NotFound();
             }
 
             var hotel = await hotelRepository.GetByIdIncludeLocationAsync(id);
 
-            if (hotel == null) {
+            if (hotel == null)
+            {
                 return NotFound();
             }
 
-            return View(hotel);
+            var viewModel = new HotelViewModel
+            {
+                HotelId = hotel.HotelId,
+                Name = hotel.Name,
+                HotelDescription = hotel.HotelDescription,
+                City = hotel.Location.City,
+                Country = hotel.Location.Country
+                /// img
+            };
+
+            return View(viewModel);
         }
 
-        // POST: Hotel/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(int id)
         {
             var hotel = await hotelRepository.GetHotelById(id);
-            
+            if (hotel == null)
+            {
+                return NotFound();
+            }
+
             repository.Delete(hotel);
             await context.SaveChangesAsync();
 

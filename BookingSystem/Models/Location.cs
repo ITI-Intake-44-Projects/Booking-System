@@ -18,8 +18,5 @@ namespace BookingSystem.Models
         public virtual List<Hotel>? Hotels { get; set; } = new List<Hotel>();
 
         public virtual List<NonHotel>? NonHotels { get; set; } = new List<NonHotel>();
-
-
-
     }
 }

@@ -31,16 +31,12 @@ namespace BookingSystem.Models
         public virtual Location? Location { get; set;}
 
         [JsonIgnore]
-
         public virtual List<Room>? Rooms { get; set; } = new List<Room>();
 
         [JsonIgnore]
-
         public virtual List<FeedBack>?FeedBacks { get; set; } = new List<FeedBack>();
 
         [JsonIgnore]
-
         public virtual List<HotelImages>?HotelImages { get; set; } = new List<HotelImages>();
-
     }
 }
