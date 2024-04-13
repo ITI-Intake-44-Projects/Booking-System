@@ -15,13 +15,15 @@ namespace BookingSystem.Controllers
         private readonly SignInManager<ApplicationUser> signInManager;
         private readonly IMapper Mapper;
         private readonly ILocationRepository location;
+        private readonly RoleManager<IdentityRole> roleManager;
 
-        public AccountController(UserManager<ApplicationUser> UserManager,SignInManager<ApplicationUser> SignInManager,IMapper mapper,ILocationRepository _Location)
+        public AccountController(UserManager<ApplicationUser> UserManager,SignInManager<ApplicationUser> SignInManager,IMapper mapper,ILocationRepository _Location, RoleManager<IdentityRole> RoleManager)
         {
             userManager = UserManager;
             signInManager = SignInManager;
             Mapper = mapper;
             location = _Location;
+            roleManager = RoleManager;
         }
         public IActionResult Index()
         {
@@ -79,6 +81,10 @@ namespace BookingSystem.Controllers
         {
             if (ModelState.IsValid == true)
             {
+
+                IdentityRole role = await roleManager.FindByNameAsync("Admin");
+                if (role != null)
+                {
                 ApplicationUser user = Mapper.Map<RegisterUserVM, ApplicationUser>(userVM);
                 IdentityResult result = await userManager.CreateAsync(user, userVM.Password);
 
@@ -90,6 +96,7 @@ namespace BookingSystem.Controllers
                 }
                 foreach (var item in result.Errors)
                     ModelState.AddModelError("", item.Description);
+                }
             }
 
             userVM.Cities = location.GetCities();

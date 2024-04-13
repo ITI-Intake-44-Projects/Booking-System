@@ -17,6 +17,8 @@ namespace BookingSystem.Controllers
 
         public IActionResult AddRole()
         {
+            
+            ViewBag.Roles = roleManager.Roles.Select(x => x.Name).ToList();
             return View("AddRole");
         }
 
@@ -32,7 +34,22 @@ namespace BookingSystem.Controllers
                 IdentityResult rust = await roleManager.CreateAsync(roleModel);
 
             }
-            return View("AddRole");
+            return RedirectToAction("AddRole");
         }
+
+        [HttpDelete]
+        public async Task<IActionResult> RemoveRole(RoleViewModel newRoleVM)
+        {
+            if (newRoleVM.RoleName != null)
+            {
+                IdentityRole role = await roleManager.FindByNameAsync(newRoleVM.RoleName);
+                if (role != null)
+                {
+                    IdentityResult rust = await roleManager.DeleteAsync(role);
+                }
+            }
+            return RedirectToAction("AddRole");
+        }
+
     }
 }
