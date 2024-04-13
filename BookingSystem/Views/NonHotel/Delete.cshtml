@@ -1,0 +1,83 @@
+﻿@model NonHotelViewModel
+
+@{
+    ViewData["Title"] = "Delete";
+    Layout = "_LoggedLayout";
+}
+
+<br />
+<br />
+<br />
+<br />
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="row no-gutters">
+                    <div class="col-md-8">
+                        <div class="card-body">
+                            <h5 class="card-title">Delete Hotel</h5>
+                            <dl class="row">
+                                <dt class="col-sm-3">Hotel Id:</dt>
+                                <dd class="col-sm-9">@Model.NonHotelId</dd>
+                                <dt class="col-sm-3">Name:</dt>
+                                <dd class="col-sm-9">@Model.Name</dd>
+                                <dt class="col-sm-3">Description:</dt>
+                                <dd class="col-sm-9">@Model.Description</dd>
+                                <dt class="col-sm-3">Country:</dt>
+                                <dd class="col-sm-9">@Model.Country</dd>
+                                <dt class="col-sm-3">City:</dt>
+                                <dd class="col-sm-9">@Model.City</dd>
+                                <dt class="col-sm-3">Reserved:</dt>
+                                <dd class="col-sm-9">@Model.Reserved</dd>
+                            </dl>
+                            <form id="deleteForm" asp-action="Delete" method="post">
+                                <input type="hidden" asp-for="NonHotelId" />
+                                <div class="d-flex justify-content-between">
+                                    <button type="submit" id="deleteButton" class="btn btn-danger mr-2">Delete</button>
+                                    <button type="button" id="cancelButton" class="btn btn-primary">Cancel</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+    function showConfirmationDialog() {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: 'You won\'t be able to revert this!',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                document.getElementById('deleteForm').submit();
+            }
+        });
+    }
+
+    document.getElementById('deleteForm').addEventListener('submit', function (event) {
+        event.preventDefault(); 
+        showConfirmationDialog();
+    });
+
+    document.getElementById('cancelButton').addEventListener('click', function () {
+        window.location.href = '/Hotel/Index';
+    });
+</script>
+
+
+<br />
+<br />
+<br />
+<br />

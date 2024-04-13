@@ -1,4 +1,5 @@
 ﻿using BookingSystem.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace BookingSystem.Repository
 {
@@ -7,6 +8,17 @@ namespace BookingSystem.Repository
         public NonHotelRepository(BookingContext _context) :base(_context)
         {
             
+        }
+        public Task<int> GetCountAsync()
+        {
+            return context.NonHotels.CountAsync();
+        }
+        public Task<List<NonHotel>> GetByPageAsync(int pageNumber, int pageSize)
+        {
+            return context.NonHotels.OrderBy(h => h.NonHotelId)
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
         }
 
         public List<NonHotel> GetNonHotelsByCity(string city)
