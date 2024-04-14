@@ -1,14 +1,7 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model List<SearchPlacesVm>
 @{
+
 }
-
-
-
-
-
-
     <!-- Places Start -->
 
     <div class="places container-xxl py-5" style="margin-top:80px">
@@ -18,122 +11,92 @@
                 <h1 class="mb-5">Explore Our <span class="text-primary text-uppercase">Places</span></h1>
             </div>
 
-            <!-- Dropdown Lists Start -->
-            <div class="container-fluid py-3">
-                <div class="row justify-content-center">
-                    <div class="col-lg-3 col-md-3">
-                        <select class="form-control">
-                            <option selected>Select Option 1</option>
-                            <option value="1">Option 1</option>
-                            <option value="2">Option 2</option>
-                            <option value="3">Option 3</option>
-                        </select>
+        <div class="row destination">
+            <div class="tab-class text-center">
+                <ul class="nav nav-pills d-inline-flex justify-content-center">
+                    <li class="nav-item">
+                        <a class="d-flex mx-3 py-2 border border-primary bg-light rounded-pill active" data-bs-toggle="pill" href="#tab-1" onclick="GetByType(this)">
+                            <span class="text-dark" style="width: 150px;" id="type">All</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="d-flex py-2 mx-3 border border-primary bg-light rounded-pill" data-bs-toggle="pill" href="#tab-2" onclick="GetByType(this)">
+                            <span class="text-dark" style="width: 150px;" id="type">Hotel</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="d-flex mx-3 py-2 border border-primary bg-light rounded-pill" data-bs-toggle="pill" href="#tab-3" onclick="GetByType(this)">
+                            <span class="text-dark" style="width: 150px;" id="type">Villa</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="d-flex mx-3 py-2 border border-primary bg-light rounded-pill" data-bs-toggle="pill" onclick="GetByType(this)">
+                            <span class="text-dark" style="width: 150px;" id="type">Apartment</span>
+                        </a>
+                    </li>
+                </ul>
                     </div>
-                    <div class="col-lg-3 col-md-3">
-                        <select class="form-control">
-                            <option selected>Select Option 2</option>
-                            <option value="1">Option 1</option>
-                            <option value="2">Option 2</option>
-                            <option value="3">Option 3</option>
-                        </select>
                     </div>
-                    <div class="col-lg-3 col-md-3">
-                        <select class="form-control">
-                            <option selected>Select Option 3</option>
-                            <option value="1">Option 1</option>
-                            <option value="2">Option 2</option>
-                            <option value="3">Option 3</option>
-                        </select>
-                    </div>
-                    <div class="col-lg-3 col-md-3">
-                        <button class="btn btn-primary btn-block">Filter</button>
-                    </div>
-                </div>
-            </div>
-            <!-- Dropdown Lists End -->
 
-            <div class="row g-4">
-                <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
-                    <div class="room-item shadow rounded overflow-hidden">
-                        <div class="position-relative">
-                            <img class="img-fluid" src="/img/room.jpg" alt="">
-                        </div>
-                        <div class="p-4 mt-2">
-                            <div class="d-flex justify-content-between mb-3">
-                                <h5 class="mb-0">Junior Suite</h5>
-                                <div class="ps-2">
-                                    <small class="fa fa-star text-warning"></small>
-                                    <small class="fa fa-star text-warning"></small>
-                                    <small class="fa fa-star text-warning"></small>
-                                    <small class="fa fa-star text-warning"></small>
-                                    <small class="fa fa-star text-warning"></small>
-                                </div>
-                            </div>
-                            <div class="d-flex mb-3">
-                                <small class="me-3 mr-2"><i class="fas fa-map-marker-alt text-primary mr-1"></i>Egypt, Hurgada</small>
-                            </div>
-                            <p class="text-body mb-3">Erat ipsum justo amet duo et elitr dolor, est duo duo eos lorem sed diam stet diam sed stet lorem.</p>
-                            <div class="text-center">
-                                <a class="btn btn-sm btn-primary rounded py-2 px-4" href="">View Detail</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            <div class="row g-4 mb-2 mt-2 all"  id="all">
 
-                <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
-                    <div class="room-item shadow rounded overflow-hidden">
-                        <div class="position-relative">
-                            <img class="img-fluid" src="/img/room.jpg" alt="">
-                        </div>
-                        <div class="p-4 mt-2">
-                            <div class="d-flex justify-content-between mb-3">
-                                <h5 class="mb-0">Junior Suite</h5>
-                                <div class="ps-2">
-                                    <small class="fa fa-star text-warning"></small>
-                                    <small class="fa fa-star text-warning"></small>
-                                    <small class="fa fa-star text-warning"></small>
-                                    <small class="fa fa-star text-warning"></small>
-                                    <small class="fa fa-star text-warning"></small>
+               @{
+                foreach (var place in Model)
+                {
+                    <div class="col-lg-4 col-md-6 wow fadeInUp place @place.Type" data-wow-delay="0.1s">
+                        <div class="room-item shadow rounded overflow-hidden h-100 ">
+                            <div class="position-relative overflow-hidden">
+                                <img class="img-fluid w-100" style="height:250px;" src="data:image/jpeg;base64,@place.Image" alt="">
+                            </div>
+
+                            <div class="p-4 mt-2">
+                                <div class="mb-3" style="height:200px;">
+                                    <div class="d-flex justify-content-between mb-3">
+                                        <h5 class="mb-0">@place.Name</h5>
+                                        <div class="ps-2">
+                                            @{
+                                                for (int i = 0; i < 5; i++)
+                                                {
+                                                    if (place.Rate != null && i < place.Rate)
+                                                    {
+                                                        <small class="fa fa-star text-warning"></small>
+                                                    }
+                                                    else
+                                                    {
+                                                        <small class="fa fa-star"></small>
+                                                    }
+
+                                                }
+                                            }
+                                        </div>
+                                    </div>
+                                    <div class="d-flex mb-3 align-items-center">
+                                        <small class="me-3 mr-2 d-flex align-items-center">
+                                            <i class="fas fa-map-marker-alt text-primary me-2 fs-5"></i>
+                                            <p class="mb-0 fs-6" id="city">@place.Location.Country,@place.Location.City</p>
+                                        </small>
+
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <p class="text-body ">@place.Description</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="text-center mt-2">
+                                    <a  class="btn btn-sm btn-primary rounded py-2 px-4" asp-controller="Room" asp-action="index" asp-route-id="@place.Id" asp-route-type="@place.Type">View Detail</a>
                                 </div>
                             </div>
-                            <div class="d-flex mb-3">
-                                <small class="me-3 mr-2"><i class="fas fa-map-marker-alt text-primary mr-1"></i>Egypt, Hurgada</small>
-                            </div>
-                            <p class="text-body mb-3">Erat ipsum justo amet duo et elitr dolor, est duo duo eos lorem sed diam stet diam sed stet lorem.</p>
-                            <div class="text-center">
-                                <a class="btn btn-sm btn-primary rounded py-2 px-4" href="">View Detail</a>
-                            </div>
+
                         </div>
                     </div>
-                </div>
-                <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
-                    <div class="room-item shadow rounded overflow-hidden">
-                        <div class="position-relative">
-                            <img class="img-fluid" src="/img/room.jpg" alt="">
-                        </div>
-                        <div class="p-4 mt-2">
-                            <div class="d-flex justify-content-between mb-3">
-                                <h5 class="mb-0">Junior Suite</h5>
-                                <div class="ps-2">
-                                    <small class="fa fa-star text-warning"></small>
-                                    <small class="fa fa-star text-warning"></small>
-                                    <small class="fa fa-star text-warning"></small>
-                                    <small class="fa fa-star text-warning"></small>
-                                    <small class="fa fa-star text-warning"></small>
-                                </div>
-                            </div>
-                            <div class="d-flex mb-3">
-                                <small class="me-3 mr-2"><i class="fas fa-map-marker-alt text-primary mr-1"></i>Egypt, Hurgada</small>
-                            </div>
-                            <p class="text-body mb-3">Erat ipsum justo amet duo et elitr dolor, est duo duo eos lorem sed diam stet diam sed stet lorem.</p>
-                            <div class="text-center">
-                                <a class="btn btn-sm btn-primary rounded py-2 px-4" href="">View Detail</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+
+                }
+                }
+            
 
             </div>
+
             <!-- Pagination -->
             <nav aria-label="Page navigation">
                 <ul class="pagination justify-content-center mt-4">
@@ -155,3 +118,32 @@
     </div>
     <!-- Plaes End -->
 
+<script>
+
+    var city = document.getElementById("city").innerHTML.split(",")[1];
+    var places = document.querySelectorAll(".place");
+    var row = document.getElementById("all")
+    function GetByType(element) {
+
+        var type = element.innerText;
+
+        row.innerHTML=""
+
+        for(var place of places)
+        {
+            if (type == "All") { 
+
+                row.append(...places)
+                break;
+            }
+
+           if (place.classList.contains(type))
+           {
+               row.appendChild(place)
+           }
+            
+        }
+
+    }
+
+</script>

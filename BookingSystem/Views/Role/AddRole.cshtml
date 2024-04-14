@@ -1,0 +1,98 @@
+﻿@model BookingSystem.ViewModels.RoleViewModel
+
+@{
+    ViewData["Title"] = "AddRole";
+}
+<br />
+<br />
+<br />
+<br />
+
+<div class="row">
+
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+
+        <form asp-action="AddRole">
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <div class="form-group">
+                
+                <label asp-for="RoleName" class="control-label"></label>
+             
+                <input asp-for="RoleName" class="form-control" />
+                
+                <span asp-validation-for="RoleName" class="text-danger"></span>
+            </div>
+            <br />
+                    <div class="form-group  text-center">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+            </div>
+        </div>
+    </div>
+</div>
+<br />
+<div class="container">
+    <div class="row justify-content-center">
+        <div>
+            <table class="table table-bordered">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Role Name</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var role in ViewBag.Roles)
+                    {
+                        <tr>
+                            <td>@role</td>
+                            <td>
+                                <a href="#" class="delete-icon" data-roleName="@role" data-roleId="@role">
+                                    <i class="fa text-danger fa-trash"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+<br />
+
+
+<br />
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        $(document).ready(function () {
+            $('.delete-icon').click(function () {
+                var roleName = $(this).data('rolename');              
+                var confirmed = window.confirm("Are you sure you want to delete role " + roleName + "?");
+                if (confirmed) {
+                    $.ajax({
+                        url: '/role/RemoveRole',
+                        type: 'DELETE',
+                        data: { RoleName: roleName },
+                        success: function (result) {
+                            console.log("Role deleted successfully");
+                            window.location.reload();
+                        },
+                        error: function (xhr, status, error) {
+                            console.error("Error deleting role:", error);
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+}

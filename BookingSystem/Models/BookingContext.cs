@@ -45,7 +45,8 @@ namespace BookingSystem.Models
         {
             modelBuilder.Entity<Dependant>().HasKey("DepId", "UserId");
 
-            modelBuilder.Entity<HotelImages>().HasKey("HotelId", "Image");
+           // modelBuilder.Entity<HotelImages>().HasKey("HotelId", "Image");
+            modelBuilder.Entity<HotelImages>().HasKey(h=>new { h.HotelId ,h.Image});
 
             modelBuilder.Entity<NonHotelImages>().HasKey("NonHotelId", "Image");
 

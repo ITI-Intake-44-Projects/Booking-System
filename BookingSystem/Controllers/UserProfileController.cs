@@ -8,7 +8,7 @@ using AutoMapper;
 
 namespace BookingSystem.Controllers
 {
-    [Authorize]
+    //[Authorize]
     public class UserProfileController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;

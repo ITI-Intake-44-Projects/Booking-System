@@ -11,11 +11,11 @@ namespace BookingSystem.Controllers
     public class HomeController : Controller
     {
         private readonly BookingContext db;
+        private readonly ILogger<HomeController> logger;
         private readonly IBookingRepository bookingRepository;
         private readonly ILocationRepository locationRepository;
-        private readonly ILogger<HomeController> logger;
 
-        public HomeController(ILogger<HomeController> logger, BookingContext db, IBookingRepository bookingRepository, ILocationRepository locationRepository)
+        public HomeController(BookingContext db, ILogger<HomeController> logger, IBookingRepository bookingRepository, ILocationRepository locationRepository)
         {
             this.db = db;
             this.logger = logger;
@@ -23,19 +23,34 @@ namespace BookingSystem.Controllers
             this.locationRepository = locationRepository;
         }
 
-
-        //[Authorize]
+        [Authorize]
         public IActionResult Index()
         {
-            var top5places = bookingRepository.GetMostVisitedPlaces();
+            try 
+            {
+                var topVisitedPlaces = bookingRepository.GetMostVisitedPlaces();
 
-            var mostVisitedPlaces = top5places.Select(group => new MostVisitedPlacesViewModel{
-                CityName = group.Key,
-                Visits = group.Count(),
-                CityImage = locationRepository.GetCityImage(group.Key)
-            }).ToList();
+                var mostVisitedPlaces = topVisitedPlaces.Select(group => new MostVisitedPlacesViewModel {
+                    CityName = group.Key,
+                    CountryName = locationRepository.GetCountryByCityName(group.Key),
+                    Visits = group.Count(),
+                    CityImage = locationRepository.GetCityImage(group.Key)
+                }).ToList();
 
-            return View("Index", mostVisitedPlaces);
+                return View("Index", mostVisitedPlaces);
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, "Error occurred while fetching data for home page");
+                return View("Error");
+            }
+        }
+
+        [HttpGet]
+        public IActionResult RenderImagesUsingAJAX(string CountryName)
+        {
+            var images = locationRepository.GetImagesByCountryName(CountryName);
+            return Json(images);
         }
 
         public IActionResult Privacy()

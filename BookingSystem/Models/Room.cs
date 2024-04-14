@@ -20,10 +20,14 @@ namespace BookingSystem.Models
 
         public string ? RoomNumber { get; set; }
 
+        [Range(0, 5)]
+        public int? Rate { get; set; }
+
         [ForeignKey("Hotel")]
         public int ? HotelId {  get; set; }
 
         public virtual Hotel? Hotel { get; set; }
+
 
         public virtual List<Booking>? Bookings { get; set; } = new List<Booking>();
 

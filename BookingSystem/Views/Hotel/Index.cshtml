@@ -1,0 +1,55 @@
+﻿@model HotelListViewModel
+
+<br />
+<br />
+<br />
+<br />
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Location</th>
+            @* <th>Image</th> *@
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var hotel in Model.Hotels)
+        {
+            <tr>
+                <td>@hotel.Name</td>
+                <td>@hotel.HotelDescription</td>
+                <td>@hotel.City, @hotel.Country</td>
+                @* <td><img class="loaded-image img-fluid rounded h-100 w-100" src="data:image/jpg;base64,@hotel.Image" alt="@hotel.Name"></td> *@
+                <td>
+                    <a asp-action="Edit" asp-route-id="@hotel.HotelId"><i class="fas fa-edit"></i></a> |
+                    <a asp-action="Delete" asp-route-id="@hotel.HotelId"><i class="fas fa-trash-alt text-danger"></i></a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@{
+    var prevDisabled = Model.PageNumber == 1 ? "disabled" : "";
+    var nextDisabled = Model.PageNumber == Model.TotalPages ? "disabled" : "";
+}
+
+<nav aria-label="Page navigation" style="display: flex; justify-content: center;">
+    <ul class="pagination">
+        <li class="page-item @prevDisabled">
+            <a class="page-link" href="?page=@(Model.PageNumber - 1)">Previous</a>
+        </li>
+        @for (int i = 1; i <= Model.TotalPages; i++)
+        {
+            <li class="page-item @(i == Model.PageNumber ? "active" : "")">
+                <a class="page-link" href="?page=@i">@i</a>
+            </li>
+        }
+        <li class="page-item @nextDisabled">
+            <a class="page-link" href="?page=@(Model.PageNumber + 1)">Next</a>
+        </li>
+    </ul>
+</nav>

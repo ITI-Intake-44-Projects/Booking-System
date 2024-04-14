@@ -1,0 +1,148 @@
+﻿@model InsertNonHotelViewModel
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "_LoggedLayout";
+}
+
+<br /> <br /> <br /> <br />
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <form asp-action="Create" method="post">
+                <div asp-validation-summary="All" class="text-danger"></div>
+
+                <div class="form-group mb-3">
+                    <label asp-for="Name" class="control-label">NonHotel Name</label>
+                    <input asp-for="Name" class="form-control" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label class="control-label">is it Reserved?</label>
+                    <div>
+                        <input type="hidden" id="ReservedHidden" name="Reserved" value="False" />
+                        <input type="checkbox" id="ReservedCheckbox" name="ReservedCheckbox" class="form-check-input" @(Model?.Reserved ?? false ? "checked" : "") />
+                        <label class="form-check-label" for="ReservedCheckbox">Reserved</label>
+                    </div>
+                    <span asp-validation-for="Reserved" class="text-danger"></span>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label asp-for="Description" class="control-label">Description</label>
+                    <textarea asp-for="Description" class="form-control"></textarea>
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+
+                <div style="display: flex;">
+                    <div class="form-group col-md-6" style="margin-right: 5px;">
+                        <label class="control-label">Country</label>
+                        <select id="countrySelect" class="form-control">
+                            <option name="Country" value="">Select Country</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group col-md-6">
+                        <label class="control-label">City</label>
+                        <select id="citySelect" class="form-control">
+                            <option name="City" value="">Select City</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group mb-3">
+                    <input type="hidden" id="selectedCountry" name="Country" />
+                    <input type="hidden" id="selectedCity" name="City" />
+                </div>
+
+                <div class="text-center mb-3">
+                    <button type="submit" class="btn btn-primary">Add NonHotel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const reservedCheckbox = document.getElementById('ReservedCheckbox');
+            const reservedHidden = document.getElementById('ReservedHidden');
+
+            reservedCheckbox.addEventListener('change', function () {
+                if (this.checked) {
+                    reservedHidden.value = 'True';
+                } else {
+                    reservedHidden.value = 'False';
+                }
+            });
+        });
+    </script>
+    <script>
+
+        var countryCities = {
+            "Egypt": ["Hurghada", "Sharm El Sheikh", "Cairo", "Alex"],
+            "USA": ["New York", "Los Angeles", "Chicago", "San Francisco"],
+            "United Kingdom": ["London", "Manchester", "Birmingham", "Edinburgh"],
+            "France": ["Paris", "Marseille", "Lyon", "Nice"],
+            "Germany": ["Berlin", "Munich", "Hamburg", "Frankfurt"]
+        };
+
+
+        var countrySelect = document.getElementById("countrySelect");
+        var citySelect = document.getElementById("citySelect");
+        
+        //hidden
+        var selectedCountryInput = document.getElementById("selectedCountry");
+        var selectedCityInput = document.getElementById("selectedCity");
+
+        for (var country in countryCities) {
+            var option = document.createElement("option");
+            option.text = country;
+            option.value = country;
+            countrySelect.add(option);
+            //console.log(countrySelect);
+        }
+
+        function updateCityDropdown() {
+            var country = countrySelect.value;
+            //console.log("country: " + country);
+
+            citySelect.innerHTML = "";
+
+            if (country) {
+                //console.log("tests");
+                var cities = countryCities[country];
+                cities.forEach(function (city) {
+                    var option = document.createElement("option");
+                    option.text = city;
+                    option.value = city;
+                    citySelect.add(option);
+                });
+            }
+            selectedCountryInput.value = country;
+            selectedCityInput.value = citySelect.value;
+
+            var countryOption = countrySelect.querySelector("option[value='" + selectedCountryInput.value + "']");
+            if (countryOption) {
+                countryOption.selected = true;
+            }
+            var cityOption = citySelect.querySelector("option[value='" + selectedCityInput.value + "']");
+            if (cityOption) {
+                cityOption.selected = true;
+            }
+
+            //console.log("selectedCountryInput: " + selectedCountryInput);
+            //console.log("selectedCityInput: " + selectedCityInput.value);
+        }
+
+        countrySelect.addEventListener("change", updateCityDropdown);
+        citySelect.addEventListener("change", function () {
+            selectedCityInput.value = citySelect.value;
+        });
+
+        //updateCityDropdown();
+    </script>
+}

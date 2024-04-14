@@ -63,7 +63,6 @@ namespace BookingSystem.Migrations
                         .HasColumnType("nvarchar(20)");
 
                     b.Property<byte[]>("Image")
-                        .IsRequired()
                         .HasColumnType("varbinary(max)");
 
                     b.Property<string>("LastName")
@@ -242,6 +241,9 @@ namespace BookingSystem.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
+                    b.Property<int?>("Rate")
+                        .HasColumnType("int");
+
                     b.Property<string>("RoomNumber")
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
@@ -401,7 +403,7 @@ namespace BookingSystem.Migrations
 
             modelBuilder.Entity("BookingSystem.Models.HotelImages", b =>
                 {
-                    b.Property<int>("HotelId")
+                    b.Property<int?>("HotelId")
                         .HasColumnType("int");
 
                     b.Property<byte[]>("Image")
@@ -555,6 +557,9 @@ namespace BookingSystem.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
+                    b.Property<int?>("Rate")
+                        .HasColumnType("int");
+
                     b.Property<bool?>("Reserved")
                         .HasMaxLength(10)
                         .HasColumnType("bit");
@@ -644,7 +649,7 @@ namespace BookingSystem.Migrations
 
             modelBuilder.Entity("BookingSystem.Models.NonHotelImages", b =>
                 {
-                    b.Property<int>("NonHotelId")
+                    b.Property<int?>("NonHotelId")
                         .HasColumnType("int");
 
                     b.Property<byte[]>("Image")
@@ -693,6 +698,9 @@ namespace BookingSystem.Migrations
                         .HasColumnType("int");
 
                     b.Property<int?>("PriceOfNight")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("Rate")
                         .HasColumnType("int");
 
                     b.Property<bool?>("Reserved")
@@ -915,7 +923,7 @@ namespace BookingSystem.Migrations
 
             modelBuilder.Entity("BookingSystem.Models.RoomImages", b =>
                 {
-                    b.Property<int>("RoomId")
+                    b.Property<int?>("RoomId")
                         .HasColumnType("int");
 
                     b.Property<byte[]>("Image")

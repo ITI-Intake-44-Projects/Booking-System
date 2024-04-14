@@ -1,8 +1,10 @@
-﻿@model List<MostVisitedPlacesViewModel>
+﻿@using System.Diagnostics
+@model List<MostVisitedPlacesViewModel>
 
 @{
     ViewData["Title"] = "Home Page";
     Layout = "_LoggedLayout";
+    var i = 1;
 }
 
 <!-- Carousel Start -->
@@ -74,15 +76,17 @@
 <!--search bar start-->
 <div class="container-fluid search-bar position-relative" style="top: -50%; transform: translateY(-50%);">
     <div class="container">
-
-        <div class="position-relative rounded-pill w-100 mx-auto p-5" style="background: rgba(19, 53, 123, 0.8);">
-            <input class="form-control border-0 rounded-pill w-100 py-3 ps-4 pe-5" type="text" placeholder="Eg: Thailand">
-            <input name="dates" placeholder="checkout/in" type="text" class="btn btn-primary position-absolute  border-0 rounded " style="top:110px;left:50%;transform:translateX(-50%) " />
-            <button type="button" class="btn btn-primary rounded-pill py-2 px-4 position-absolute me-2" style="top: 50%; right: 46px; transform: translateY(-50%);">Search</button>
-        </div>
+        <form asp-action="Index" asp-controller="Search" method="post" enctype="multipart/form-data">
+            <div class="position-relative rounded-pill w-100 mx-auto p-5" style="background: rgba(19, 53, 123, 0.8);">
+                <input class="form-control border-0 rounded-pill w-100 py-3 ps-4 pe-5" type="text" placeholder="Eg: Thailand" name="city">
+                <input name="dates" placeholder="checkout/in" type="text" class="btn btn-primary position-absolute  border-0 rounded " style="top:110px;left:50%;transform:translateX(-50%) " />
+                <button type="submit" class="btn btn-primary rounded-pill py-2 px-4 position-absolute me-2" style="top: 50%; right: 46px; transform: translateY(-50%);">Search</button>
+            </div>
+        </form>
     </div>
 </div>
 <!--search bar end-->
+
 <!-- Destination Start -->
 <div class="container-fluid destination py-5">
     <div class="container py-5">
@@ -92,43 +96,54 @@
         </div>
         <div class="tab-class text-center">
             <ul class="nav nav-pills d-inline-flex justify-content-center mb-5">
-                @foreach (var placeGroup in Model)
-                {
-                    <li class="nav-item">
-                        <a class="d-flex mx-3 py-2 border border-primary bg-light rounded-pill" data-bs-toggle="pill" href="#tab-@placeGroup.CityName">
-                            <span class="text-dark" style="width: 150px;">@placeGroup.CityName</span>
-                        </a>
-                    </li>
-                }
+                <li class="nav-item">
+                    <a class="d-flex mx-3 py-2 border border-primary bg-light rounded-pill nav-link active" 
+                        data-bs-toggle="pill" href="#tab-All" data-country="All">
+                        <span class="text-dark" style="width: 150px;">All</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="d-flex mx-3 py-2 border border-primary bg-light rounded-pill nav-link"
+                       data-bs-toggle="pill" href="#tab-Egypt" data-country="Egypt">
+                        <span class="text-dark" style="width: 150px;">Egypt</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="d-flex mx-3 py-2 border border-primary bg-light rounded-pill nav-link"
+                       data-bs-toggle="pill" href="#tab-Morocco" data-country="Indonesia">
+                        <span class="text-dark" style="width: 150px;">Indonesia</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="d-flex mx-3 py-2 border border-primary bg-light rounded-pill nav-link"
+                       data-bs-toggle="pill" href="#tab-USA" data-country="USA">
+                        <span class="text-dark" style="width: 150px;">USA</span>
+                    </a>
+                </li>
             </ul>
-
-            <div class="tab-content">
+            <div class="row g-2 tab-content" id="big">
                 @foreach (var place in Model)
                 {
-                    <div id="tab-@place.CityName" class="tab-pane fade show p-0">
-                        <div class="row g-4">
-                            <div class="col-lg-6">
-                                <div class="destination-img">
-                                                                         @*convert byte array to img*@
-                                    <img class="img-fluid rounded w-100" src="data:images/png;base64,@place.CityImage" alt="">
-                                    <div class="destination-overlay p-4">
-                                        <a href="#" class="btn btn-primary text-white rounded-pill border py-2 px-3">20 Photos</a>
-                                        <h4 class="text-white mb-2 mt-3">@place.CityName</h4>
-                                        <a href="#" class="btn-hover text-white">View All Place <i class="fa fa-arrow-right ms-2"></i></a>
-                                    </div>
-                                    @*<div  class="search-icon">
-                                        <a href="@place." data-lightbox="@place.Name"><i class="fa fa-plus-square fa-1x btn btn-light btn-lg-square text-primary"></i></a>
-                                       </div>*@
-                                </div>
+                    <div id="tab-@i" class="col-lg-4 col-md-6 cities tab-pane fade show active m-3 " style="max-width:400px">
+                        <div style="" class="destination-img h-100">
+                            <img class="loaded-image img-fluid rounded h-100 w-100" src="data:image/jpg;base64,@place.CityImage" alt="@place.CityName">
+                            <div class="destination-overlay p-3">
+                                  <h4 class="loaded-image-name text-white mb-2 mt-3" name="cityname">@place.CityName</h4>
+                                    <a class="btn-hover-text-warning text-white" asp-controller="Search" asp-action="Index" asp-route-city="@place.CityName">
+                                        View All Hotels
+                                        <i class="fa fa-arrow-right ms-2"></i>
+                                    </a>                               
                             </div>
                         </div>
                     </div>
+                    i++;
                 }
             </div>
         </div>
     </div>
 </div>
 <!-- Destination End -->
+
 <!-- cities start -->
 <div class="container-fluid ExploreTour py-5">
     <div class="container py-5">
@@ -194,12 +209,55 @@
     </div>
 </div>
 <!-- cities end -->
-<!--scripts for date picker -->
-<script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
-<script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
-<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
-<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+
 
 <script>
     $('input[name="dates"]').daterangepicker();
 </script>
+
+<script>
+    var big = document.getElementById('big');
+    var cities = document.querySelectorAll('.cities');
+    function loadImages(countryName)
+    {
+        big.innerHTML = "";
+        if (countryName == "All") {
+            big.append(...cities);
+            console.log(cities);
+        } 
+        else 
+        {
+            $.ajax({
+                url: '/Home/RenderImagesUsingAJAX',
+                type: 'GET',
+                data: { countryName: countryName },
+                success: function (data) {
+
+                    for (let idx = 0; idx < data.length; idx++){
+                        big.append(cities[idx]);
+                        document.querySelectorAll(".loaded-image")[idx].src = 'data:image/jpg;base64,' + data[idx]._image
+                        document.querySelectorAll(".loaded-image-name")[idx].innerHTML = data[idx]._name
+                        
+                    }
+                }, 
+                error: function (xhr, status, error) {
+                    console.error('Error:', error);
+                    $('#tab-' + countryName + ' .tab-pane').html('<p>Error loading images. Please try again later.</p>');
+                }
+            });
+            console.log("test");
+        }
+    }
+    $('.nav-link').click(function () {
+        var countryName = $(this).data('country');
+        loadImages(countryName);
+    });
+</script>
+
+

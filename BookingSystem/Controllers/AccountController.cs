@@ -15,19 +15,23 @@ namespace BookingSystem.Controllers
         private readonly SignInManager<ApplicationUser> signInManager;
         private readonly IMapper Mapper;
         private readonly ILocationRepository location;
+        private readonly RoleManager<IdentityRole> roleManager;
 
-        public AccountController(UserManager<ApplicationUser> UserManager,SignInManager<ApplicationUser> SignInManager,IMapper mapper,ILocationRepository _Location)
+        public AccountController(UserManager<ApplicationUser> UserManager,SignInManager<ApplicationUser> SignInManager,IMapper mapper,ILocationRepository _Location, RoleManager<IdentityRole> RoleManager)
         {
             userManager = UserManager;
             signInManager = SignInManager;
             Mapper = mapper;
             location = _Location;
+            roleManager = RoleManager;
         }
         public IActionResult Index()
         {
             //return View("Register");
             return RedirectToAction("Register");   
         }
+
+      
 
         [HttpGet]
         public IActionResult Register()
@@ -37,6 +41,7 @@ namespace BookingSystem.Controllers
             userVm.Countires = location.GetDistinctCountries();
             return View("Register",userVm);
         }
+       
 
         [HttpPost]
         public async Task<IActionResult> Register(RegisterUserVM userVM)
@@ -59,6 +64,44 @@ namespace BookingSystem.Controllers
             userVM.Cities = location.GetCities();
             userVM.Countires = location.GetDistinctCountries();
             return View("Register",userVM);
+        }
+
+        //Register as an admin 
+        [HttpGet]
+        public IActionResult RegisterAdmin()
+        {
+            RegisterUserVM userVm = new RegisterUserVM();
+            userVm.Cities = location.GetCities();
+            userVm.Countires = location.GetDistinctCountries();
+            return View("RegisterAdmin", userVm);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> RegisterAdmin(RegisterUserVM userVM)
+        {
+            if (ModelState.IsValid == true)
+            {
+
+                IdentityRole role = await roleManager.FindByNameAsync("Admin");
+                if (role != null)
+                {
+                ApplicationUser user = Mapper.Map<RegisterUserVM, ApplicationUser>(userVM);
+                IdentityResult result = await userManager.CreateAsync(user, userVM.Password);
+
+                if (result.Succeeded)
+                {
+                    IdentityResult resultRole = await userManager.AddToRoleAsync(user, "Admin");
+                    await signInManager.SignInAsync(user, false);
+                    return RedirectToAction("Login");
+                }
+                foreach (var item in result.Errors)
+                    ModelState.AddModelError("", item.Description);
+                }
+            }
+
+            userVM.Cities = location.GetCities();
+            userVM.Countires = location.GetDistinctCountries();
+            return View("RegisterAdmin", userVM);
         }
 
 
@@ -87,7 +130,7 @@ namespace BookingSystem.Controllers
                     if (userExists)
                     {
                         await signInManager.SignInAsync(applicationUser, viewModel.RememberMe);
-                        return  Content("Logged in successfully :) ");
+                        return RedirectToAction("Index", "Home");
                     }
                 }
                 ModelState.AddModelError("", "Invalid Account Credientials");
@@ -97,9 +140,6 @@ namespace BookingSystem.Controllers
 
         public IActionResult Details(ApplicationUser Appuser)
         {
-
-          
-
             return View("Details");
         }
     }
