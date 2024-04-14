@@ -1,70 +1,116 @@
 ﻿@model BookingSystem.ViewModels.UserProfileViewModel
 
-<h2>User Profile</h2>
 
 
-<div class="container">
-    <div class="row">
+<div class="container" style="margin-top:120px">
 
-        <div class="form-group">
-            <label asp-for="Image" class="control-label">Current Image</label>
-            @if (Model.ImageBase64 != null)
-            {
-                <img src="data:image;base64,@Model.ImageBase64" alt="User Image" class="img-fluid" />
-            }
-            else
-            {
-                <p>No image available</p>
-            }
-        </div>
-        <div class="col-md-6 offset-md-3">
-            <form asp-action="UpdateProfile" asp-controller="UserProfile" method="post" enctype="multipart/form-data">
-
-                      
-
-                <div class="form-group">
-                    <label asp-for="FirstName" class="control-label"></label>
-                    <input asp-for="FirstName" class="form-control" />
-                    <span asp-validation-for="FirstName" class="text-danger"></span>
-                </div>
-
-                <div class="form-group">
-                    <label asp-for="LastName" class="control-label"></label>
-                    <input asp-for="LastName" class="form-control" />
-                    <span asp-validation-for="LastName" class="text-danger"></span>
-                </div>
-
-                <div class="form-group">
-                    <label asp-for="Address" class="control-label"></label>
-                    <input asp-for="Address" class="form-control" />
-                    <span asp-validation-for="Address" class="text-danger"></span>
-                </div>
-
-                <div class="form-group">
-                    <label asp-for="Gender" class="control-label"></label>
-                    <input asp-for="Gender" class="form-control" />
-                    <span asp-validation-for="Gender" class="text-danger"></span>
-                </div>
-
-                <div class="form-group">
-                    <label asp-for="City" class="control-label"></label>
-                    <input asp-for="City" class="form-control" />
-                    <span asp-validation-for="City" class="text-danger"></span>
-                </div>
-
-                <div class="form-group">
-                    <label asp-for="Country" class="control-label"></label>
-                    <input asp-for="Country" class="form-control" />
-                    <span asp-validation-for="Country" class="text-danger"></span>
-                </div>
-
-                <div class="form-group">
-                    <label asp-for="ImageForm" class="control-label">Upload New Image</label>
-                    <input asp-for="ImageForm" type="file" class="form-control-file" />
-                </div>
-
-                <button type="submit" class="btn btn-primary">Update Profile</button>
-            </form>
-        </div>
+    <div class="mx-auto text-center mb-5" style="max-width: 900px;">
+        <h5 class="section-title px-3">Profile</h5>
+        <h1 class="mb-0">User Profile</h1>
     </div>
-</div>
+   @*  <div class="row">
+       
+        <div class="col-md-6 offset-md-3"> *@
+
+    <div class="row mb-5 justify-content-center">
+                <div class="col-md-3 mr-1 align-text-center">
+              
+                    @*  <label asp-for="Image" class="control-label">Current Image</label> *@
+                    @if (Model.ImageBase64 != null)
+                    {
+
+                            <img src="data:image;base64,@Model.ImageBase64" alt="User Image" class="img-thumbnail rounded-circle profile-image  mx-auto d-block mb-4" @* class="img-fluid rounded-circle" *@ @* class="img-fluid mx-auto d-block" *@ />
+                         
+                    }
+                    else
+                    {
+                        <p>No image available</p>
+                    }
+                
+                </div>
+
+                <div class="col-md-6">
+            <form asp-action="UpdateProfile" asp-controller="UserProfile" method="post" enctype="multipart/form-data" style="border: 2px solid #13357b; padding: 20px; border-radius: 10px;">
+
+                <div class="form-group row">
+                    <label asp-for="FirstName" class="col-sm-4 col-form-label">First Name</label>
+                    <div class="col-sm-8">
+                        <input asp-for="FirstName" class="form-control" />
+                        <span asp-validation-for="FirstName" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="form-group row mt-3">
+                    <label asp-for="LastName" class="col-sm-4 col-form-label">Last Name</label>
+                    <div class="col-sm-8">
+                        <input asp-for="LastName" class="form-control" />
+                        <span asp-validation-for="LastName" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="form-group row mt-3">
+                    <label asp-for="Address" class="col-sm-4 col-form-label">Address</label>
+                    <div class="col-sm-8">
+                        <input asp-for="Address" class="form-control" />
+                        <span asp-validation-for="Address" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="form-group row mt-3">
+                    <label asp-for="Gender" class="col-sm-4 col-form-label">Gender</label>
+                    <div class="col-sm-8">
+                        <input asp-for="Gender" class="form-control" />
+                        <span asp-validation-for="Gender" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="form-group row mt-3">
+                    <label asp-for="City" class="col-sm-4 col-form-label">City</label>
+                    <div class="col-sm-8">
+                        <input asp-for="City" class="form-control" />
+                        <span asp-validation-for="City" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="form-group row mt-3">
+                    <label asp-for="Country" class="col-sm-4 col-form-label">Country</label>
+                    <div class="col-sm-8">
+                        <input asp-for="Country" class="form-control" />
+                        <span asp-validation-for="Country" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="form-group row mt-3">
+                    <label asp-for="ImageForm" class="col-sm-4 col-form-label">Upload New Image</label>
+                    <div class="col-sm-8">
+                        <input asp-for="ImageForm" type="file" class="form-control-file" />
+                    </div>
+                </div>
+
+                <div class="form-group row mt-3">
+                    <div class="col-sm-8 offset-sm-3">
+                        <button type="submit" class="btn btn-primary">Update Profile</button>
+                    </div>
+                </div>
+            </form>
+            </div>
+            </div>
+        </div>
+   @*  </div>
+</div> *@
+<style>
+    .profile-image {
+        width: 200px; /* Set the desired width */
+        height: 200px; /* Set the desired height */
+        object-fit: cover; /* Ensure the image covers the container */
+    }
+
+    @@media (max-width: 768px) {
+        .profile-image {
+            width: 150px; /* Adjust for smaller screens */
+            height: 150px; /* Adjust for smaller screens */
+        }
+    }
+
+        
+</style>
