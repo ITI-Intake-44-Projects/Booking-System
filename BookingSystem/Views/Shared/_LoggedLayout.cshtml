@@ -62,6 +62,13 @@
                             <a href="#" class="dropdown-item"><i class="fas fa-comment-alt me-2"></i> Inbox</a>
                             <a href="#" class="dropdown-item"><i class="fas fa-bell me-2"></i> Notifications</a>
                             <a href="#" class="dropdown-item"><i class="fas fa-cog me-2"></i> Account Settings</a>
+
+                            @if (User.IsInRole("Admin"))
+                            {
+                                <a asp-controller="Role" asp-action="AddRole" class="dropdown-item"><i class="fas fa-cog me-2"></i> Roles</a>
+
+                                <a asp-controller="NonHotel" asp-action="Index" class="dropdown-item"><i class="fas fa-cog me-2"></i> NonHotels</a>
+                            }
                             <a asp-controller="Account" asp-action="Logout" class="dropdown-item"><i class="fas fa-power-off me-2"></i> Log Out</a>
                         </div>
                     </div>

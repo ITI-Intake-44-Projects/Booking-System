@@ -3,6 +3,13 @@
 <br />
 <br />
 <br />
+<br/>
+<div class="d-flex justify-content-start align-items-center">
+    <a asp-controller="NonHotel" asp-action="Create" class="btn btn-outline-primary">
+        <i class="fas fa-plus"></i> Add NonHotel
+    </a>
+</div>
+<br />
 <table class="table">
     <thead>
         <tr>
@@ -34,6 +41,7 @@
     var prevDisabled = Model.PageNumber == 1 ? "disabled" : "";
     var nextDisabled = Model.PageNumber == Model.TotalPages ? "disabled" : "";
 }
+
 
 <nav aria-label="Page navigation" style="display: flex; justify-content: center;">
     <ul class="pagination">
